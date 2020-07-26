@@ -46,7 +46,7 @@ struct ContentView: View {
                 }
                 Spacer()
                     .frame(height: 25)
-                NavigationLink(destination: Inscrption(med: NewMed())) {
+                NavigationLink(destination: PreSignUp()) {
                     Text("Inscription")
                         .modifier(ButtonStyle())
                 }

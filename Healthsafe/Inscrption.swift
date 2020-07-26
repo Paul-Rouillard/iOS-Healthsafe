@@ -36,6 +36,9 @@ struct Inscrption: View {
                                     .font(.custom("Raleway", size: 16))
                             }
                     }.pickerStyle(SegmentedPickerStyle())
+                    TextField("Phone number", text: $med.phoneNbr)
+                        .modifier(FormTextFieldStyle())
+                        .keyboardType(.numberPad)
                 } // end of first section
                 
                 Section {
