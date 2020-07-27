@@ -17,7 +17,7 @@ struct PreSignUp: View {
                 .modifier(ButtonStyle())
             Spacer()
                 .frame(height: 100)
-            NavigationLink(destination: Inscrption(med: NewMed())) {
+            NavigationLink(destination: SignUpMed(med: NewMed())) {
                     Text("Vous êtes un medecin")
             }
                 .modifier(ButtonStyle())

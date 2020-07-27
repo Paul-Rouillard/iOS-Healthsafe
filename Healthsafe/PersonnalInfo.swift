@@ -11,7 +11,6 @@ import SwiftUI
 struct PersonnalInfo: View {
     @ObservedObject var patient: NewPatient
     var body: some View {
-        NavigationView {
             Form {
                 Section {
                     TextField("Fisrt name", text: $patient.firstName)
@@ -55,15 +54,18 @@ struct PersonnalInfo: View {
                 }
 
                 Section {
-                    Button(action: {
-                        print("Button Action")
-                        self.patient.alertIsVisible = true
-                    }) {
-                        Text("Submit")
-                            .modifier(ButtonStyle())
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            print("Button Action")
+                            self.patient.alertIsVisible = true
+                        }) {
+                            Text("Submit")
+                                .modifier(ButtonStyle())
+                        }
+                        Spacer()
                     }
                 }
-            }
         }
     }
 }

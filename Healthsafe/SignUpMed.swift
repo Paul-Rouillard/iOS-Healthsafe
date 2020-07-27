@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct Inscrption: View {
+struct SignUpMed: View {
     @ObservedObject var med: NewMed
     
     @State var confirmation: String = ""
@@ -78,12 +78,17 @@ struct Inscrption: View {
                 }
                 
                 Section {
-                    Button(action: {
-                        print("Button Action")
-                        self.med.alertIsVisible = true
-                    }) {
-                        Text("Submit")
-                            .modifier(ButtonStyle())
+
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            print("Button Action")
+                            self.med.alertIsVisible = true
+                        }) {
+                            Text("Submit")
+                                .modifier(ButtonStyle())
+                        }
+                        Spacer()
                     }
 //                    .alert(isPresented: $med.alertIsVisible) { () ->
 //                        Alert in
@@ -127,6 +132,6 @@ struct Inscrption: View {
 
 struct Inscrption_Previews: PreviewProvider {
     static var previews: some View {
-        Inscrption(med: NewMed())
+        SignUpMed(med: NewMed())
     }
 }

@@ -10,7 +10,7 @@
 		4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189524CB0ED700D0299F /* PreSignUp.swift */; };
 		4029189824CB137000D0299F /* SignUpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189724CB137000D0299F /* SignUpClient.swift */; };
 		4029189A24CDE9A100D0299F /* PersonnalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189924CDE9A100D0299F /* PersonnalInfo.swift */; };
-		4084ABC724BA3A7F007D12C7 /* Inscrption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084ABC624BA3A7F007D12C7 /* Inscrption.swift */; };
+		4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */; };
 		40C442C624B231BE002989C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C524B231BE002989C5 /* AppDelegate.swift */; };
 		40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C724B231BE002989C5 /* SceneDelegate.swift */; };
 		40C442CA24B231BE002989C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C924B231BE002989C5 /* ContentView.swift */; };
@@ -47,7 +47,7 @@
 		4029189524CB0ED700D0299F /* PreSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSignUp.swift; sourceTree = "<group>"; };
 		4029189724CB137000D0299F /* SignUpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpClient.swift; sourceTree = "<group>"; };
 		4029189924CDE9A100D0299F /* PersonnalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonnalInfo.swift; sourceTree = "<group>"; };
-		4084ABC624BA3A7F007D12C7 /* Inscrption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inscrption.swift; sourceTree = "<group>"; };
+		4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMed.swift; sourceTree = "<group>"; };
 		40C442C224B231BE002989C5 /* Healthsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Healthsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C442C524B231BE002989C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40C442C724B231BE002989C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,17 +117,17 @@
 		40C442C424B231BE002989C5 /* Healthsafe */ = {
 			isa = PBXGroup;
 			children = (
-				40C442C524B231BE002989C5 /* AppDelegate.swift */,
 				40C442FF24B646E2002989C5 /* DbConnexion.swift */,
-				40C442C724B231BE002989C5 /* SceneDelegate.swift */,
-				40C442C924B231BE002989C5 /* ContentView.swift */,
 				40C442FD24B623EA002989C5 /* Styles.swift */,
+				40C442C924B231BE002989C5 /* ContentView.swift */,
 				40C442F924B35F52002989C5 /* Home.swift */,
-				40C442FB24B36266002989C5 /* SignUp.swift */,
-				4084ABC624BA3A7F007D12C7 /* Inscrption.swift */,
+				4029189924CDE9A100D0299F /* PersonnalInfo.swift */,
 				4029189524CB0ED700D0299F /* PreSignUp.swift */,
 				4029189724CB137000D0299F /* SignUpClient.swift */,
-				4029189924CDE9A100D0299F /* PersonnalInfo.swift */,
+				4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */,
+				40C442C524B231BE002989C5 /* AppDelegate.swift */,
+				40C442C724B231BE002989C5 /* SceneDelegate.swift */,
+				40C442FB24B36266002989C5 /* SignUp.swift */,
 				40C442F724B24586002989C5 /* Drop.swift */,
 				40C442CB24B231C1002989C5 /* Assets.xcassets */,
 				40C442D024B231C1002989C5 /* LaunchScreen.storyboard */,
@@ -300,7 +300,7 @@
 				4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */,
 				40C4430024B646E2002989C5 /* DbConnexion.swift in Sources */,
 				40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */,
-				4084ABC724BA3A7F007D12C7 /* Inscrption.swift in Sources */,
+				4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */,
 				4029189824CB137000D0299F /* SignUpClient.swift in Sources */,
 				4029189A24CDE9A100D0299F /* PersonnalInfo.swift in Sources */,
 				40C442FA24B35F52002989C5 /* Home.swift in Sources */,
