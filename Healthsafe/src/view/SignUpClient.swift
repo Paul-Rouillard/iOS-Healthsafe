@@ -17,9 +17,9 @@ struct SignUpClient: View {
                 Section {
                     TextField("Email", text: $patient.emailAddr)
                         .modifier(FormTextFieldStyle())
-                    SecureField("Password", text: $patient.passwd)
+                    SecureField("Password", text: $patient.password)
                         .modifier(FormTextFieldStyle())
-                    SecureField("Confirm passsword", text: $patient.passwd2)
+                    SecureField("Confirm passsword", text: $patient.confirmationPassword)
                         .modifier(FormTextFieldStyle())
                 }
                 Section {

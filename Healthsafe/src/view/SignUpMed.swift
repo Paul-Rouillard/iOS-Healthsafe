@@ -23,7 +23,7 @@ struct SignUpMed: View {
                         .modifier(FormTextFieldStyle())
                     TextField("Last Name", text: $med.lastName)
                         .modifier(FormTextFieldStyle())
-                    TextField("Your age", text: $med.age)
+                    TextField("Your age", value: $med.age, formatter: NumberFormatter())
                         .modifier(FormTextFieldStyle())
                         .keyboardType(.numberPad)
                     DatePicker(selection: $med.birthday, in: ...Date(), displayedComponents: .date) {
@@ -36,27 +36,27 @@ struct SignUpMed: View {
                                     .font(.custom("Raleway", size: 16))
                             }
                     }.pickerStyle(SegmentedPickerStyle())
-                    TextField("Phone number", text: $med.phoneNbr)
+                    TextField("Phone number", text: $med.phoneNumber)
                         .modifier(FormTextFieldStyle())
                         .keyboardType(.numberPad)
                 } // end of first section
                 
                 Section {
-                    TextField("E-mail", text: $med.emailAddr)
+                    TextField("E-mail", text: $med.email)
                         .modifier(FormTextFieldStyle())
-                    SecureField("Password", text: $med.passwd)
+                    SecureField("Password", text: $med.password)
                          .modifier(FormTextFieldStyle())
-                    SecureField("Confirm password", text: $med.passwd2)
+                    SecureField("Confirm password", text: $med.confirmationPassword)
                          .modifier(FormTextFieldStyle())
                 }
 
                 Section {
-                    TextField("Phone number", text: $med.phoneNbr)
+                    TextField("Phone number", text: $med.phoneNumber)
                         .modifier(FormTextFieldStyle())
-                    TextField("Street name", text: $med.streetName)
+                    TextField("Street name", text: $med.street)
                         .modifier(FormAddressStyle())
                     HStack {
-                        TextField("Post code", text: $med.zipCode)
+                        TextField("Post code", value: $med.zipCode, formatter: NumberFormatter())
                            .font(.custom("Raleway", size: 16))
                            .frame(width: 100.0, height: 30)
                            .keyboardType(.numberPad)
@@ -70,10 +70,10 @@ struct SignUpMed: View {
                 }
 
                 Section {
-                    TextField("Medical ID", text: $med.medicalID)
+                    TextField("Medical ID", text: $med.idNumber)
                         .modifier(FormTextFieldStyle())
                         .keyboardType(.numberPad)
-                    TextField("Medical speciality", text: $med.expMedicale)
+                    TextField("Medical speciality", text: $med.expertiseDomain)
                         .modifier(FormTextFieldStyle())
                 }
                 

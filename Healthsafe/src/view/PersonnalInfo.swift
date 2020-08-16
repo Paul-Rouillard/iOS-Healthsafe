@@ -27,7 +27,7 @@ struct PersonnalInfo: View {
                 }
 
                 Section {
-                    TextField("Security number", text: $patient.securityNbr)
+                    TextField("Security number", value: $patient.securityNbr, formatter: NumberFormatter())
                         .keyboardType(.numberPad)
                         .modifier(FormTextFieldStyle())
                     TextField("Medecin traitant", text: $patient.doctor)
@@ -35,9 +35,9 @@ struct PersonnalInfo: View {
                 }
 
                 Section {
-                    TextField("Phone number", text: $patient.phoneNbr)
+                    TextField("Phone number", text: $patient.phoneNumber)
                         .modifier(FormTextFieldStyle())
-                    TextField("Street name", text: $patient.streetName)
+                    TextField("Street name", text: $patient.street)
                         .modifier(FormAddressStyle())
                     HStack {
                         TextField("Post code", text: $patient.zipCode)
