@@ -10,6 +10,9 @@ import SwiftUI
 
 struct PersonnalInfo: View {
     @ObservedObject var patient: NewPatient
+    @State private var confirmationMessage = ""
+    @State private var showingCongirmation = false
+    
     var body: some View {
             Form {
                 Section {
@@ -58,7 +61,7 @@ struct PersonnalInfo: View {
                         Spacer()
                         Button(action: {
                             print("Button Action")
-                            self.patient.alertIsVisible = true
+                            self.submit()
                         }) {
                             Text("Submit")
                                 .modifier(ButtonStyle())
@@ -66,7 +69,36 @@ struct PersonnalInfo: View {
                         Spacer()
                     }
                 }
+            }.alert(isPresented: $showingCongirmation) {
+                Alert(title: Text("Welcome"), message: Text(confirmationMessage), dismissButton: .default(Text("Dismiss")))
+                
         }
+    }
+    func submit() {
+        guard let encoded = try? JSONEncoder().encode(patient)
+            else {
+                print("Fail to encode patient informations")
+                return
+        }
+        let signIncreateURL = URL(string: "https://reqres.in/api/healthsafe")!
+        var request = URLRequest(url: signIncreateURL)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = encoded
+        print(encoded)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print("No data in response \(error?.localizedDescription ?? "Unknown error").")
+                return
+            }
+            if (try? JSONDecoder().decode(NewPatient.self, from: data)) != nil {
+                self.confirmationMessage = "You are sign up !"
+                self.showingCongirmation = true
+            }
+            else {
+                print("invalid respose from the server !")
+            }
+        }.resume()
     }
 }
 

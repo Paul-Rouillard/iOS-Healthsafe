@@ -53,8 +53,25 @@ struct SignUpMed: View {
                 Section {
                     TextField("Phone number", text: $med.phoneNumber)
                         .modifier(FormTextFieldStyle())
-                    TextField("Street name", text: $med.street)
-                        .modifier(FormAddressStyle())
+                    HStack {
+                        TextField("Building number", value: $med.streetNumber, formatter: NumberFormatter())
+                            .keyboardType(.numberPad)
+                        .modifier(FormTextFieldStyle())
+                        Picker("Number ext.", selection: $med.indexStreetNbr) {
+                            ForEach (0 ..< NewMed.typeStreetNumber.count) {
+                                Text(NewMed.typeStreetNumber[$0])
+                            }
+                        }
+                    }
+                    HStack {
+                        Picker("Street desc.", selection: $med.indexStreet) {
+                            ForEach (0 ..< NewMed.typeStreet.count) {
+                                Text(NewMed.typeStreet[$0])
+                            }
+                        }
+                        TextField("Street name", text: $med.street)
+                            .modifier(FormAddressStyle())
+                    }
                     HStack {
                         TextField("Post code", value: $med.zipCode, formatter: NumberFormatter())
                            .font(.custom("Raleway", size: 16))
@@ -67,6 +84,7 @@ struct SignUpMed: View {
                             .font(.custom("Raleway", size: 16))
                             .frame(height: 30)
                     }
+                    TextField("Country", text: $med.country)
                 }
 
                 Section {
@@ -78,27 +96,25 @@ struct SignUpMed: View {
                 }
                 
                 Section {
-
                     HStack {
                         Spacer()
                         Button(action: {
-                            print("Button Action")
-                            self.med.alertIsVisible = true
+                            print("Med sign up button pressed")
+                            self.sendNewMed()
                         }) {
                             Text("Submit")
                                 .modifier(ButtonStyle())
                         }
                         Spacer()
                     }
-//                    .alert(isPresented: $med.alertIsVisible) { () ->
-//                        Alert in
-//                        return Alert(title: Text("DEBUG"), message: Text("\(self.med.firstName)\n"), dismissButton: .default(Text("ok")))
+
                 }.disabled(!med.isValid)
             }
         }.navigationBarTitle(Text("Doc's personnal info"))
 //            .alert(isPresented: $showConfirmation){
 //            Alert(title: Text("Welocme"), message: Text(confirmation), dismissButton: .default(Text("Dismiss")))
 //        }
+        
     }
     
     func sendNewMed() {
@@ -106,12 +122,14 @@ struct SignUpMed: View {
             print("Fail to encode newMed")
             return
         }
-        let url = URL(string: "https://reques.in/api/newMed")!
+        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/drProfile/create")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         request.httpBody = encoded
-        
+
+        print(String(data: encoded, encoding: .utf8)!)
+
         URLSession.shared.dataTask(with: request) {
             guard let data = $0 else {
                 print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
