@@ -1,5 +1,5 @@
 //
-//  DBConnexion.swift
+//  APIResquests.swift
 //  Healthsafe
 //
 //  Created by Paul Rouillard on 08/07/2020.

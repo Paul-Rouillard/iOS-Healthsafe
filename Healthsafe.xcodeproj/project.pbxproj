@@ -24,7 +24,7 @@
 		40C442FA24B35F52002989C5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442F924B35F52002989C5 /* Home.swift */; };
 		40C442FC24B36266002989C5 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FB24B36266002989C5 /* SignUp.swift */; };
 		40C442FE24B623EA002989C5 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FD24B623EA002989C5 /* Styles.swift */; };
-		40C4430024B646E2002989C5 /* DbConnexion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FF24B646E2002989C5 /* DbConnexion.swift */; };
+		40C4430024B646E2002989C5 /* APIResquests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FF24B646E2002989C5 /* APIResquests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +69,7 @@
 		40C442F924B35F52002989C5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		40C442FB24B36266002989C5 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		40C442FD24B623EA002989C5 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
-		40C442FF24B646E2002989C5 /* DbConnexion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbConnexion.swift; sourceTree = "<group>"; };
+		40C442FF24B646E2002989C5 /* APIResquests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResquests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				40783A3024D9758E00AC7A35 /* view */,
-				40C442FF24B646E2002989C5 /* DbConnexion.swift */,
+				40C442FF24B646E2002989C5 /* APIResquests.swift */,
 				409E600E24ED59B000B64B7E /* NFCscan.swift */,
 			);
 			path = src;
@@ -319,7 +319,7 @@
 				40C442FE24B623EA002989C5 /* Styles.swift in Sources */,
 				40C442FC24B36266002989C5 /* SignUp.swift in Sources */,
 				4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */,
-				40C4430024B646E2002989C5 /* DbConnexion.swift in Sources */,
+				40C4430024B646E2002989C5 /* APIResquests.swift in Sources */,
 				40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */,
 				4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */,
 				4029189824CB137000D0299F /* SignUpClient.swift in Sources */,
