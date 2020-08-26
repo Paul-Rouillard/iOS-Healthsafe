@@ -110,7 +110,9 @@ struct SignUpMed: View {
 
                 }.disabled(!med.isValid)
             }
-        }.navigationBarTitle(Text("Doc's personnal info"))
+        }
+            .navigationBarTitle("Doc's personnal info", displayMode: .inline)
+            .padding(.top, 20)
 //            .alert(isPresented: $showConfirmation){
 //            Alert(title: Text("Welocme"), message: Text(confirmation), dismissButton: .default(Text("Dismiss")))
 //        }

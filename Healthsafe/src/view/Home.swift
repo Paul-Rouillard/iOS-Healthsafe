@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct Home: View {
+    @State var data: String = ""
+   
     var body: some View {
 //        let name: String = "Paul"
         VStack {
@@ -22,6 +24,11 @@ struct Home: View {
                 Image("logo_tel")
                 Image("pc_bureau")
             }
+            Spacer()
+            Text(data).background(Color.red)
+            nfcButton(data: self.$data)
+                .frame(width: 75.0, height: 20.0)
+                .modifier(ButtonStyle())
             Spacer()
         }
         

@@ -14,6 +14,7 @@ struct PersonnalInfo: View {
     @State private var showingCongirmation = false
     
     var body: some View {
+        NavigationView {
             Form {
                 Section {
                     TextField("Fisrt name", text: $patient.firstName)
@@ -71,8 +72,10 @@ struct PersonnalInfo: View {
                 }
             }.alert(isPresented: $showingCongirmation) {
                 Alert(title: Text("Welcome"), message: Text(confirmationMessage), dismissButton: .default(Text("Dismiss")))
-                
+            }
         }
+            .navigationBarTitle("Patient's information", displayMode: .inline)
+            .padding(.top, 20)
     }
     func submit() {
         guard let encoded = try? JSONEncoder().encode(patient)
