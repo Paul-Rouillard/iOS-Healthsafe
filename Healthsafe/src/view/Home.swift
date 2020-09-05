@@ -13,24 +13,39 @@ struct Home: View {
    
     var body: some View {
 //        let name: String = "Paul"
-        VStack {
-            Spacer()
-            Text("NFC").font(.largeTitle).modifier(LabelStyle())
-            Spacer()
-//            Text("Welcome \(name)").modifier(LabelStyle())
-            Text("Please select your plateform").modifier(LabelStyle())
-            Spacer()
-            HStack {
-                Image("logo_tel")
-                Image("pc_bureau")
+        Group {
+            VStack {
+                Button(action: {
+                    print("--------------\nlogging out...\n--------------")
+                    self.Deconnexion()
+                    ContentView()
+                }
+                ) {
+                    Text("Log out")
+                        .frame(width: 325, alignment: .topLeading)
+                        .modifier(LabelStyle())
+                }
+                Spacer()
+                Text("NFC").font(.largeTitle).modifier(LabelStyle())
+                Spacer()
+                    .frame(width: 50, height: 50)
+    //            Text("Welcome \(name)").modifier(LabelStyle())
+                Text("Please select your plateform").modifier(LabelStyle())
+                Spacer()
+                HStack {
+                    Image("logo_tel")
+                    Image("pc_bureau")
+                }
+                Text(data).background(Color.red)
+                nfcButton(data: self.$data)
+                    .frame(width: 75.0, height: 20.0)
+                    .modifier(ButtonStyle())
+                Spacer()
             }
-            Spacer()
-            Text(data).background(Color.red)
-            nfcButton(data: self.$data)
-                .frame(width: 75.0, height: 20.0)
-                .modifier(ButtonStyle())
-            Spacer()
         }
+    }
+    
+    func Deconnexion() {
         
     }
 }

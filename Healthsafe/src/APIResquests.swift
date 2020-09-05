@@ -8,89 +8,64 @@
 
 import Foundation
 
-struct Med: Codable {
-    var indexGender = 0
-    var firstName: String = ""
-    var lastName: String = ""
-    var age: Int?
-    var birthday = Date()
-    var phoneNumber: String = ""
-
-    var email: String = ""
-    var password: String = ""
-    var confirmationPassword: String = ""
-
-    var idNumber: String = ""
-    var expertiseDomain: String = ""
-    var address: Address
-}
-
-struct Address: Codable {
-    var streetNumber: Int?
-    enum typeStreetNumber: String, CaseIterable {
-        case NO = ""
-        case bis = "bis"
-        case ter = "ter"
-    }
-    var street: String?
-    enum typeStreet: String, CaseIterable {
-        case rue = "rue"
-        case boulevard = "boulevard"
-        case avenue = "avenue"
-        case chemin = "chemin"
-    }
-    var zipCode: Int?
-    var city: String = ""
-}
-
-struct Pateint: Codable {
-    
-}
-
-let encoder = JSONEncoder()
-let decoder = JSONDecoder()
-
-
-
-
-
 class NewMed: ObservableObject, Codable {
     enum CodingKeys: String, CodingKey {
-        case lastName, firstName, age, phoneNumber, birthday,  email, password, streetNumber, typeStreetNumber, typeStreet, street, zipCode, city, idNumber, expertiseDomain
+        case lastName, firstName, age, phoneNumber, birthday,  email, password, address, idNumber, expertiseDomain
+    }
+
+    struct Address: Codable {
+        var streetNumber: Int = 0
+//        enum typeStreetNumber: String, CaseIterable {
+//            case NO = ""
+//            case bis = "bis"
+//            case ter = "ter"
+//        }
+        var street: String = ""
+//        enum typeStreet: String, CaseIterable {
+//            case rue = "rue"
+//            case boulevard = "boulevard"
+//            case avenue = "avenue"
+//            case chemin = "chemin"
+//        }
+        static let typeStreetNumber = ["", "bis", "ter"]
+//        var indexStreetNbr = 0
+        static let typeStreet = ["rue", "boulevard", "avenue", "chemin"]
+//        var indexStreet = 0
+
+        var zipCode: Int = 0
+        var city: String = ""
+        var country: String = ""
     }
 
     static let genders = ["Male", "Female"]
     @Published var indexGender = 0
     @Published var firstName: String = ""
     @Published var lastName: String = ""
-    @Published var age: Int?
-    @Published var birthday = Date()
+    @Published var age: Int = 0
+    @Published var birthday: Date = Date()
     @Published var phoneNumber: String = ""
 
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmationPassword: String = ""
 
-    @Published var streetNumber: Int?
+    @Published var address: Address?
+
+    @Published var streetNumber: Int = 0
     static let typeStreetNumber = ["", "bis", "ter"]
     @Published var indexStreetNbr = 0
-    @Published var street: String = ""
     static let typeStreet = ["rue", "boulevard", "avenue", "chemin"]
-//    enum typeStreet: String, CaseIterable {
-//        case rue = "rue"
-//        case boulevard = "boulevard"
-//        case avenue = "avenue"
-//        case chemin = "chemin"
-//    }
     @Published var indexStreet = 0
-    @Published var zipCode: Int?
-    @Published var city: String = ""
+    @Published var zipCode: Int = 0
     @Published var country: String = ""
+    @Published var city: String = ""
+    @Published var street: String = ""
+
     @Published var idNumber: String = ""
     @Published var expertiseDomain: String = ""
 
     var isValid: Bool  {
-        if (firstName.isEmpty || lastName.isEmpty || age != nil || email.isEmpty || password.isEmpty || confirmationPassword.isEmpty || street.isEmpty || zipCode != nil || city.isEmpty || idNumber.isEmpty) {
+        if (firstName.isEmpty || lastName.isEmpty || age >= 18 || email.isEmpty || password.isEmpty || confirmationPassword.isEmpty || address!.street.isEmpty || address!.zipCode > 1000 || address!.city.isEmpty || idNumber.isEmpty) {
             return false
         }
         return true
@@ -107,12 +82,7 @@ class NewMed: ObservableObject, Codable {
         phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
         email = try container.decode(String.self, forKey: .email)
         password = try container.decode(String.self, forKey: .password)
-        streetNumber = try container.decode(Int.self, forKey: .typeStreetNumber)
-//        typeStreetNumber = try container.decode(String.self, forKey: typeStreetNumber)
-//        typeStreet = try container.decode(String.self, forKey: .typeStreet)
-        street = try container.decode(String.self, forKey: .street)
-        zipCode = try container.decode(Int.self, forKey: .zipCode)
-        city = try container.decode(String.self, forKey: .city)
+        address = try container.decode(Address.self, forKey: .address)
         idNumber = try container.decode(String.self, forKey: .idNumber)
         expertiseDomain = try container.decode(String.self, forKey: .expertiseDomain)
     }
@@ -126,9 +96,7 @@ class NewMed: ObservableObject, Codable {
         try container.encode(phoneNumber, forKey: .phoneNumber)
         try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
-        try container.encode(street, forKey: .street)
-        try container.encode(zipCode, forKey: .zipCode)
-        try container.encode(city, forKey: .city)
+        try container.encode(address, forKey: .address)
         try container.encode(idNumber, forKey: .idNumber)
         try container.encode(expertiseDomain, forKey: .expertiseDomain)
     }
