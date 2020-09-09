@@ -18,13 +18,14 @@ struct Home: View {
                 Button(action: {
                     print("--------------\nlogging out...\n--------------")
                     self.Deconnexion()
-                    ContentView()
                 }
                 ) {
                     Text("Log out")
                         .frame(width: 325, alignment: .topLeading)
                         .modifier(LabelStyle())
-                }
+                }.onTapGesture(perform: {
+                    ContentView()
+                })
                 Spacer()
                 Text("NFC").font(.largeTitle).modifier(LabelStyle())
                 Spacer()

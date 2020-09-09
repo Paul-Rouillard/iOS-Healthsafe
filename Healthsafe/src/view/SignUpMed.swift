@@ -72,6 +72,7 @@ struct SignUpMed: View {
                         TextField("Building number", value: $med.streetNumber, formatter: NumberFormatter())
                             .keyboardType(.numberPad)
                         .modifier(FormTextFieldStyle())
+//                        IndexSteetNbr(med: NewMed())
                         Picker("Number ext.", selection: $med.indexStreetNbr) {
                             ForEach (0 ..< NewMed.typeStreetNumber.count) {
                                 Text(NewMed.typeStreetNumber[$0])
@@ -84,6 +85,8 @@ struct SignUpMed: View {
                                 Text(NewMed.typeStreet[$0])
                             }
                         }
+                        .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
+//                        IndexSteet(med: NewMed())
                         TextField("Street name", text: $med.street)
                             .modifier(FormAddressStyle())
                     }
@@ -95,7 +98,7 @@ struct SignUpMed: View {
                         Text(" | ")
                             .font(.custom("Raleway", size: 18))
                             .foregroundColor(Color.black)
-                        TextField("City", text: $med.address.city)
+                        TextField("City", text: $med.city)
                             .font(.custom("Raleway", size: 16))
                             .frame(height: 30)
                     }
@@ -136,57 +139,144 @@ struct SignUpMed: View {
     
     func sendNewMed() {
         med.age = currentAge
-        print("""
-            -----------------------------------------
-            Printing JSON:
-            lastName: \(med.lastName)
-            firstName: \(med.firstName)
-            birthday: \(med.birthday)
-            age: \(med.age)
-            phoneNbr: \(med.phoneNumber)
-            email: \(med.email)
-            password: \(med.password)
-            confirpwd: \(med.confirmationPassword)
-            expDomain: \(med.expertiseDomain)
-            idNumber: \(med.idNumber)
-            -----
-            Address :
-            streetNumber: \(med.address!.streetNumber)
-            street: \(med.address!.street)
-            zipCode: \(med.address!.zipCode)
-            city: \(med.address!.city)
-            country: \(med.address!.country)
-            ----------------------------------------
-            END FIRST PART OF JSON
-            """)
-//        guard let encoded = try? JSONEncoder().encode(med) else {
-//            print("Fail to encode newMed")
-//            return
-//        }
-//        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/drProfile/create")!
-//        var request = URLRequest(url: url)
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "POST"
-//        request.httpBody = encoded
+//        print("""
+//            -----------------------------------------
+//            Printing JSON:
+//            lastName: \(med.lastName)
+//            firstName: \(med.firstName)
+//            birthday: \(med.birthday)
+//            age: \(med.age)
+//            phoneNbr: \(med.phoneNumber)
+//            email: \(med.email)
+//            password: \(med.password)
+//            confirpwd: \(med.confirmationPassword)
+//            expDomain: \(med.expertiseDomain)
+//            idNumber: \(med.idNumber)
+//            -----
+//            Address :
 //
-//        print(String(data: encoded, encoding: .utf8)!)
-//
-//        URLSession.shared.dataTask(with: request) {
-//            guard let data = $0 else {
-//                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
-//                return
-//            }
-//            if let decoder = try? JSONDecoder().decode(NewMed.self, from: data) {
-//                self.confirmation = "Sign up completed !\nWelcome \(decoder.firstName)"
-//                self.showConfirmation = true
-//            } else {
-//                let dataString = String(decoding: data, as: UTF8.self)
-//                print("Invalid response \(dataString)")
-//            }
-//
-//        }.resume()
+//            ----------------------------------------
+//            END FIRST PART OF JSON
+//            """)
+        guard let encoded = try? JSONEncoder().encode(med) else {
+            print("Fail to encode newMed")
+            return
+        }
+        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/drProfile/create")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = encoded
+
+        print(String(data: encoded, encoding: .utf8)!)
+
+        URLSession.shared.dataTask(with: request) {
+            guard let data = $0 else {
+                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
+                return
+            }
+            if let decoder = try? JSONDecoder().decode(NewMed.self, from: data) {
+                self.confirmation = "Sign up completed !\nWelcome \(decoder.firstName)"
+                self.showConfirmation = true
+            } else {
+                let dataString = String(decoding: data, as: UTF8.self)
+                print("Invalid response \(dataString)")
+            }
+
+        }.resume()
     }
     
+}
+
+struct IndexSteet: View {
+    @State var expand: Bool = false
+    @ObservedObject var med: NewMed
+
+
+    var body: some View {
+        VStack{
+            HStack {
+                Text("Extension")
+                Image(systemName: expand ? "chevron.up" : "chevron.down")
+                    .resizable()
+                    .frame(width: 13, height: 6)
+            }.onTapGesture(perform: {
+                self.expand.toggle()
+            })
+            if expand {
+                Button(action: {
+                    print("chemain")
+//                    med.typeStreet = "chemin"
+                    self.expand.toggle()
+                }) {
+                    Text("Chemin")
+                }
+                Button(action: {
+                    print("rue")
+//                    med.typeStreet = "rue"
+                    self.expand.toggle()
+                }) {
+                    Text("Rue")
+                }
+                Button(action: {
+                    print("avenue")
+//                    med.typeStreet = "avenue"
+                    self.expand.toggle()
+                }) {
+                    Text("Avenue")
+                }
+                Button(action: {
+                    print("boulevard")
+//                    med.typeStreet = "boulevard"
+                    self.expand.toggle()
+                }) {
+                    Text("Boulevard")
+                }
+            }
+        }
+    }
+}
+
+struct IndexSteetNbr: View {
+    @State var expand: Bool = false
+    @ObservedObject var med: NewMed
+
+
+    var body: some View {
+        VStack{
+            HStack {
+                Text("Extension")
+                Image(systemName: expand ? "chevron.up" : "chevron.down")
+                    .resizable()
+                    .frame(width: 13, height: 6)
+            }.onTapGesture(perform: {
+                self.expand.toggle()
+            })
+            if expand {
+                Button(action: {
+                    print("N/A")
+//                    med.typeStreetNumber = ""
+                    self.expand.toggle()
+                }) {
+                    Text(" ")
+                }
+                Button(action: {
+                    print("bis")
+//                    med.typeStreetNumber = "bis"
+                    self.expand.toggle()
+                }) {
+                    Text("Bis")
+                }
+                Button(action: {
+                    print("ter")
+//                    med.typeStreetNumber = "ter"
+                    self.expand.toggle()
+                }) {
+                    Text("ter")
+                }
+            }
+        }
+    }
 }
 
 struct Inscrption_Previews: PreviewProvider {

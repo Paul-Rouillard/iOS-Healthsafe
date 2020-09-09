@@ -11,14 +11,15 @@ import SwiftUI
 // All modifier are in Styles.swift
 
 struct LoginFormView : View {
-
-    @State private var userName: String = ""
-    @State private var passwd: String = ""
-
-    @State private var showError = false
+    @State private var showError: Bool = false
+    @State private var showEmpty: Bool = false
+    @State private var confirmation: String = ""
+    @State private var showConfirmation: Bool = false
 
     @Binding var signInSuccess: Bool
 
+    @ObservedObject var connexion: Connexion
+    
     var body: some View {
         VStack {
             Image("Logo_healthsafe")
@@ -33,12 +34,12 @@ struct LoginFormView : View {
             Spacer()
                 .frame(height: 75.0)
             VStack {
-                TextField("ID", text: $userName)
+                TextField("ID", text: $connexion.emailAddr)
                     .modifier(LabelStyle())
 
                 Spacer()
                     .frame(height: 30.0)
-                SecureField("PASSWORD", text: $passwd)
+                SecureField("PASSWORD", text: $connexion.password)
                     .modifier(LabelStyle())
             }
             Spacer()
@@ -51,18 +52,25 @@ struct LoginFormView : View {
 //            }.padding()
 
             if showError {
-                Text("Incorrect username/password").foregroundColor(Color.red)
+                Text("Incorrect username/password.").foregroundColor(Color.red)
+            }
+            if showEmpty {
+                Text("Error: One or all fields are empty.")
             }
             VStack {
                 Button(action: {
-                    // Your auth logic
-                    if(self.userName == self.passwd) {
-                        self.signInSuccess = true
+                    if (connexion.checkEmpty) {
+                        do {
+                            try self.connect()
+                            self.signInSuccess = true
+                        }
+                        catch {
+                            self.showError = true
+                        }
+                    } else {
+                        self.showEmpty = true
                     }
-                    else {
-                        self.showError = true
-                    }
-
+                    
                 }) {
                     Text("Connexion")
                         .modifier(ButtonStyle())
@@ -74,8 +82,35 @@ struct LoginFormView : View {
                         .modifier(ButtonStyle())
                 }
             }
-
         }
+    }
+    
+    func connect() throws {
+        guard let encoded = try? JSONEncoder().encode(connexion) else {
+            print("Fail to encode newMed")
+            return
+        }
+        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/signin/create")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = encoded
+
+        print(String(data: encoded, encoding: .utf8)!)
+
+        URLSession.shared.dataTask(with: request) {
+            guard let data = $0 else {
+                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
+                return
+            }
+            if let decoder = try? JSONDecoder().decode(Connexion.self, from: data) {
+                self.confirmation = "Sign in completed!\nWelcome to Healthsafe!"
+                self.showConfirmation = true
+            } else {
+                let dataString = String(decoding: data, as: UTF8.self)
+                print("Invalid response \(dataString)")
+            }
+        }.resume()
     }
 }
 
@@ -89,7 +124,7 @@ struct ContentView: View {
                 Home()
             }
             else {
-                LoginFormView(signInSuccess: $signInSuccess)
+                LoginFormView(signInSuccess: $signInSuccess, connexion: Connexion())
             }
         }
     }
