@@ -74,15 +74,16 @@ struct SignUpMed: View {
                         .modifier(FormTextFieldStyle())
 //                        IndexSteetNbr(med: NewMed())
                         Picker("Number ext.", selection: $med.indexStreetNbr) {
-                            ForEach (0 ..< NewMed.typeStreetNumber.count) {
-                                Text(NewMed.typeStreetNumber[$0])
+                            ForEach (0 ..< NewMed.typeStreetNbr.count) {
+                                Text(NewMed.typeStreetNbr[$0])
                             }
                         }
                     }
                     HStack {
                         Picker("Street desc.", selection: $med.indexStreet) {
-                            ForEach (0 ..< NewMed.typeStreet.count) {
-                                Text(NewMed.typeStreet[$0])
+                            ForEach (0 ..< NewMed.typeStrt.count) {
+                                Text(NewMed.typeStrt[$0])
+//                                NewMed.typeStreet = NewMed.typeStreet[$0]
                             }
                         }
                         .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
@@ -103,6 +104,7 @@ struct SignUpMed: View {
                             .frame(height: 30)
                     }
                     TextField("Country", text: $med.country)
+                        .modifier(FormAddressStyle())
                 }
 
                 Section {
@@ -154,6 +156,13 @@ struct SignUpMed: View {
 //            idNumber: \(med.idNumber)
 //            -----
 //            Address :
+//            streetNumber: \(med.streetNumber)
+//            typeStreetNumber: \(med.typeStreetNumber)
+//            typeStreet: \(med.typeStreet)
+//            street: \(med.street)
+//            zipCode: \(med.zipCode)
+//            city: \(med.city)
+//            country \(med.country)
 //
 //            ----------------------------------------
 //            END FIRST PART OF JSON
@@ -185,7 +194,6 @@ struct SignUpMed: View {
 
         }.resume()
     }
-    
 }
 
 struct IndexSteet: View {

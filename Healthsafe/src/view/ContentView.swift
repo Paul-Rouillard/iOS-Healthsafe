@@ -15,6 +15,7 @@ struct LoginFormView : View {
     @State private var showEmpty: Bool = false
     @State private var confirmation: String = ""
     @State private var showConfirmation: Bool = false
+    @State private var showEmailError: Bool = false
 
     @Binding var signInSuccess: Bool
 
@@ -54,18 +55,26 @@ struct LoginFormView : View {
             if showError {
                 Text("Incorrect username/password.").foregroundColor(Color.red)
             }
+            if showEmailError {
+                Text("Error: the ID must be an email").foregroundColor(.red)
+            }
             if showEmpty {
                 Text("Error: One or all fields are empty.")
             }
             VStack {
                 Button(action: {
                     if (connexion.checkEmpty) {
-                        do {
-                            try self.connect()
-                            self.signInSuccess = true
-                        }
-                        catch {
-                            self.showError = true
+                        if (connexion.emailAddr.isValidEmail)
+                        {
+                            do {
+                                try self.connect()
+                                self.signInSuccess = true
+                            }
+                            catch {
+                                self.showError = true
+                            }
+                        } else {
+                            showEmailError = true
                         }
                     } else {
                         self.showEmpty = true
