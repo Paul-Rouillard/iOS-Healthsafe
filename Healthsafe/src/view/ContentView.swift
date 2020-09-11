@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 // All modifier are in Styles.swift
 
@@ -17,10 +18,8 @@ struct LoginFormView : View {
     @State private var showConfirmation: Bool = false
     @State private var showEmailError: Bool = false
 
-    @Binding var signInSuccess: Bool
-
-    @ObservedObject var connexion: Connexion
-    
+    @EnvironmentObject var settings: UserSettings
+   
     var body: some View {
         VStack {
             Image("Logo_healthsafe")
@@ -35,12 +34,12 @@ struct LoginFormView : View {
             Spacer()
                 .frame(height: 75.0)
             VStack {
-                TextField("ID", text: $connexion.emailAddr)
+                TextField("ID", text: $settings.emailAddr)
                     .modifier(LabelStyle())
 
                 Spacer()
                     .frame(height: 30.0)
-                SecureField("PASSWORD", text: $connexion.password)
+                SecureField("PASSWORD", text: $settings.password)
                     .modifier(LabelStyle())
             }
             Spacer()
@@ -63,12 +62,12 @@ struct LoginFormView : View {
             }
             VStack {
                 Button(action: {
-                    if (connexion.checkEmpty) {
-                        if (connexion.emailAddr.isValidEmail)
+                    if (settings.checkEmpty) {
+                        if (settings.emailAddr.isValidEmail)
                         {
                             do {
                                 try self.connect()
-                                self.signInSuccess = true
+                                self.settings.loogedIn = true
                             }
                             catch {
                                 self.showError = true
@@ -86,16 +85,22 @@ struct LoginFormView : View {
                 }
                 Spacer()
                     .frame(height: 25)
-                NavigationLink(destination: PreSignUp()) {
+                Button(action: {
+                    self.settings.signIn = true
+                }) {
                     Text("Inscription")
                         .modifier(ButtonStyle())
                 }
+//                NavigationLink(destination: PreSignUp()) {
+//                    Text("Inscription")
+//                        .modifier(ButtonStyle())
+//                }
             }
         }
     }
     
     func connect() throws {
-        guard let encoded = try? JSONEncoder().encode(connexion) else {
+        guard let encoded = try? JSONEncoder().encode(settings) else {
             print("Fail to encode newMed")
             return
         }
@@ -112,8 +117,8 @@ struct LoginFormView : View {
                 print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
                 return
             }
-            if let decoder = try? JSONDecoder().decode(Connexion.self, from: data) {
-                self.confirmation = "Sign in completed!\nWelcome to Healthsafe!"
+            if let decoder = try? JSONDecoder().decode(UserSettings.self, from: data) {
+                print("------------\nLogging in ...\n\(decoder.emailAddr) is logged in.\n-----------")
                 self.showConfirmation = true
             } else {
                 let dataString = String(decoding: data, as: UTF8.self)
@@ -124,17 +129,18 @@ struct LoginFormView : View {
 }
 
 struct ContentView: View {
-    
     @State var signInSuccess = false
+    @EnvironmentObject var settings: UserSettings
 
     var body: some View {
-        return Group {
-            if signInSuccess {
-                Home()
-            }
-            else {
-                LoginFormView(signInSuccess: $signInSuccess, connexion: Connexion())
-            }
+        if (settings.loogedIn) {
+            return AnyView(Home())
+        }
+        if (settings.signIn) {
+            return AnyView(PreSignUp())
+        }
+        else {
+            return AnyView(LoginFormView())
         }
     }
 }

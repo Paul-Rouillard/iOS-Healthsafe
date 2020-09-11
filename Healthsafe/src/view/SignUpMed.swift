@@ -32,7 +32,7 @@ struct SignUpMed: View {
     }
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             Form {
                 Section {
                     TextField("Fisrt name", text: $med.firstName)
@@ -131,13 +131,13 @@ struct SignUpMed: View {
                 }.disabled(!med.isValid)
             }
         }
-            .navigationBarTitle("Doc's personnal info", displayMode: .inline)
+//            .navigationBarTitle("Doc's personnal info", displayMode: .inline)
 //            .padding(.top, 20)
 //            .alert(isPresented: $showConfirmation){
 //            Alert(title: Text("Welocme"), message: Text(confirmation), dismissButton: .default(Text("Dismiss")))
 //        }
         
-    }
+//    }
     
     func sendNewMed() {
         med.age = currentAge

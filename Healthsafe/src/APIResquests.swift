@@ -190,14 +190,16 @@ class NewPatient: ObservableObject, Codable {
     }
 }
 
-class Connexion: Codable, ObservableObject {
+class UserSettings: Codable, ObservableObject {
     enum CodingKeys: String, CodingKey {
         case emailAddr, password, token
     }
 
+    @Published var loogedIn: Bool = false
+    @Published var signIn: Bool = false
     @Published var emailAddr: String = ""
     @Published var password: String = ""
-    var token: String = ""
+    var token: String?
     
     var checkEmpty: Bool {
         if (emailAddr.isEmpty || password.isEmpty) {
@@ -235,3 +237,4 @@ class Connexion: Codable, ObservableObject {
         try container.encode(password, forKey: .password)
     }
 }
+

@@ -10,22 +10,24 @@ import SwiftUI
 
 struct Home: View {
     @State var data: String = ""
-   
+    @EnvironmentObject var settings: UserSettings
+
     var body: some View {
-//        let name: String = "Paul"
         Group {
             VStack {
                 Button(action: {
                     print("--------------\nlogging out...\n--------------")
-                    self.Deconnexion()
-                }
-                ) {
+                    do {
+                        try self.Deconnexion()
+                        self.settings.loogedIn = false
+                    } catch {
+                        print("error while logging out")
+                    }
+                }) {
                     Text("Log out")
                         .frame(width: 325, alignment: .topLeading)
                         .modifier(LabelStyle())
-                }.onTapGesture(perform: {
-                    ContentView()
-                })
+                }
                 Spacer()
                 Text("NFC").font(.largeTitle).modifier(LabelStyle())
                 Spacer()
@@ -46,8 +48,31 @@ struct Home: View {
         }
     }
     
-    func Deconnexion() {
-        
+    func Deconnexion() throws {
+        guard let encoded = try? JSONEncoder().encode(settings) else {
+            print("Fail to encode newMed")
+            return
+        }
+        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/logout")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = encoded
+
+        print(String(data: encoded, encoding: .utf8)!)
+
+        URLSession.shared.dataTask(with: request) {
+            guard let data = $0 else {
+                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
+                return
+            }
+            if let decoder = try? JSONDecoder().decode(UserSettings.self, from: data) {
+                print("------------\nLogging out ...\n\(decoder.emailAddr) is logged out!")
+            } else {
+                let dataString = String(decoding: data, as: UTF8.self)
+                print("Invalid response \(dataString)")
+            }
+        }.resume()
     }
 }
 
