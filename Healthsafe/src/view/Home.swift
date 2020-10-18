@@ -10,7 +10,21 @@ import SwiftUI
 
 struct Home: View {
     @State var data: String = ""
-    @EnvironmentObject var settings: UserSettings
+    @State var signOff: Bool = false
+   
+    var body: some View {
+        if signOff {
+            return AnyView(ContentView())
+        } else {
+            return AnyView(HomeView(signOff: $signOff))
+        }
+    }
+}
+
+struct HomeView: View {
+    @State var data: String = ""
+    @Binding var signOff: Bool
+    @ObservedObject var connexion = Connexion()
 
     var body: some View {
         Group {
@@ -19,15 +33,17 @@ struct Home: View {
                     print("--------------\nlogging out...\n--------------")
                     do {
                         try self.Deconnexion()
-                        self.settings.loogedIn = false
                     } catch {
-                        print("error while logging out")
+                        print("Error while signing off")
                     }
-                }) {
+                }
+                ) {
                     Text("Log out")
                         .frame(width: 325, alignment: .topLeading)
                         .modifier(LabelStyle())
-                }
+                }.onTapGesture(perform: {
+                    self.signOff = false
+                })
                 Spacer()
                 Text("NFC").font(.largeTitle).modifier(LabelStyle())
                 Spacer()
@@ -39,17 +55,20 @@ struct Home: View {
                     Image("logo_tel")
                     Image("pc_bureau")
                 }
-                Text(data).background(Color.red)
-                nfcButton(data: self.$data)
-                    .frame(width: 75.0, height: 20.0)
-                    .modifier(ButtonStyle())
+                //nfcButton(data: $data)
+//                    .frame(width: 75.0, height: 20.0)
+//                    .modifier(ButtonStyle())
                 Spacer()
             }
         }
     }
-    
+
+    func handleServerError(_ res: URLResponse?) {
+        print("ERROR: Status Code: \(res!): the status code MUST be between 200 and 299")
+    }
+
     func Deconnexion() throws {
-        guard let encoded = try? JSONEncoder().encode(settings) else {
+        guard let encoded = try? JSONEncoder().encode(connexion) else {
             print("Fail to encode newMed")
             return
         }
@@ -60,17 +79,21 @@ struct Home: View {
         request.httpBody = encoded
 
         print(String(data: encoded, encoding: .utf8)!)
-
-        URLSession.shared.dataTask(with: request) {
-            guard let data = $0 else {
-                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
+        URLSession.shared.dataTask(with: url) { data, res, error in
+            guard let httpResponse = res as? HTTPURLResponse,
+                    (200...299).contains(httpResponse.statusCode) else {
+                    self.handleServerError(res)
                 return
             }
-            if let decoder = try? JSONDecoder().decode(UserSettings.self, from: data) {
-                print("------------\nLogging out ...\n\(decoder.emailAddr) is logged out!")
-            } else {
-                let dataString = String(decoding: data, as: UTF8.self)
-                print("Invalid response \(dataString)")
+            if let data = data {
+                let decoder = JSONDecoder()
+                if let json = try? decoder.decode(Connexion.self, from: data) {
+                    print(json)
+                }
+                else {
+                    let dataString = String(decoding: data, as: UTF8.self)
+                    print("Invalid response \(dataString)")
+                }
             }
         }.resume()
     }

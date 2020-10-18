@@ -9,17 +9,17 @@
 import SwiftUI
 import Combine
 
-// All modifier are in Styles.swift
-
-struct LoginFormView : View {
+struct LoginFormView: View {
     @State private var showError: Bool = false
     @State private var showEmpty: Bool = false
+    @State private var showSignUp: Bool = false
     @State private var confirmation: String = ""
     @State private var showConfirmation: Bool = false
-    @State private var showEmailError: Bool = false
 
-    @EnvironmentObject var settings: UserSettings
-   
+    @Binding var signInSuccess: Bool
+
+    @ObservedObject var connexion: Connexion
+
     var body: some View {
         VStack {
             Image("Logo_healthsafe")
@@ -34,46 +34,33 @@ struct LoginFormView : View {
             Spacer()
                 .frame(height: 75.0)
             VStack {
-                TextField("ID", text: $settings.emailAddr)
+                TextField("ID", text: $connexion.emailAddr)
+                    .frame(width: 200.0)
                     .modifier(LabelStyle())
 
                 Spacer()
                     .frame(height: 30.0)
-                SecureField("PASSWORD", text: $settings.password)
+                SecureField("PASSWORD", text: $connexion.password)
+                    .frame(width: 200.0)
                     .modifier(LabelStyle())
             }
             Spacer()
                 .frame(height: 50.0)
-
-//            HStack {
-//                Text(" Password")
-//                TextField("type here", text: $password)
-//                    .textContentType(.password)
-//            }.padding()
-
             if showError {
                 Text("Incorrect username/password.").foregroundColor(Color.red)
-            }
-            if showEmailError {
-                Text("Error: the ID must be an email").foregroundColor(.red)
             }
             if showEmpty {
                 Text("Error: One or all fields are empty.")
             }
             VStack {
                 Button(action: {
-                    if (settings.checkEmpty) {
-                        if (settings.emailAddr.isValidEmail)
-                        {
-                            do {
-                                try self.connect()
-                                self.settings.loogedIn = true
-                            }
-                            catch {
-                                self.showError = true
-                            }
-                        } else {
-                            showEmailError = true
+                    if (connexion.checkEmpty) {
+                        do {
+                            try self.connect()
+                            self.signInSuccess = true
+                        }
+                        catch {
+                            self.showError = true
                         }
                     } else {
                         self.showEmpty = true
@@ -83,24 +70,30 @@ struct LoginFormView : View {
                     Text("Connexion")
                         .modifier(ButtonStyle())
                 }
+                .padding(.horizontal, 25.0)
+                
                 Spacer()
                     .frame(height: 25)
                 Button(action: {
-                    self.settings.signIn = true
+                    print("inscription pressed")
+                    self.showSignUp = true
                 }) {
                     Text("Inscription")
-                        .modifier(ButtonStyle())
-                }
-//                NavigationLink(destination: PreSignUp()) {
-//                    Text("Inscription")
-//                        .modifier(ButtonStyle())
-//                }
+                        .font(.custom("Raleway", size: 20))
+                        .modifier(ColourStyle())
+                }.sheet(isPresented: $showSignUp, content: {
+                    PreSignUp()
+                })
             }
         }
     }
-    
+
+    func handleServerError(_ res: URLResponse?) {
+        print("ERROR: Status Code: \(res!): the status code MUST be between 200 and 299")
+    }
+
     func connect() throws {
-        guard let encoded = try? JSONEncoder().encode(settings) else {
+        guard let encoded = try? JSONEncoder().encode(connexion) else {
             print("Fail to encode newMed")
             return
         }
@@ -112,35 +105,36 @@ struct LoginFormView : View {
 
         print(String(data: encoded, encoding: .utf8)!)
 
-        URLSession.shared.dataTask(with: request) {
-            guard let data = $0 else {
-                print("No data in response: \($2?.localizedDescription ?? "Unkwnon Error").")
+        URLSession.shared.dataTask(with: url) { data, res, error in
+            guard let httpResponse = res as? HTTPURLResponse,
+                    (200...299).contains(httpResponse.statusCode) else {
+                    self.handleServerError(res)
                 return
             }
-            if let decoder = try? JSONDecoder().decode(UserSettings.self, from: data) {
-                print("------------\nLogging in ...\n\(decoder.emailAddr) is logged in.\n-----------")
-                self.showConfirmation = true
-            } else {
-                let dataString = String(decoding: data, as: UTF8.self)
-                print("Invalid response \(dataString)")
+            if let data = data {
+                let decoder = JSONDecoder()
+                if let json = try? decoder.decode(Connexion.self, from: data) {
+                    print(json)
+                }
+                else {
+                    let dataString = String(decoding: data, as: UTF8.self)
+                    print("Invalid response \(dataString)")
+                }
             }
         }.resume()
     }
 }
 
 struct ContentView: View {
+    
     @State var signInSuccess = false
-    @EnvironmentObject var settings: UserSettings
 
     var body: some View {
-        if (settings.loogedIn) {
+        if signInSuccess {
             return AnyView(Home())
         }
-        if (settings.signIn) {
-            return AnyView(PreSignUp())
-        }
         else {
-            return AnyView(LoginFormView())
+            return AnyView(LoginFormView(signInSuccess: $signInSuccess, connexion: Connexion()))
         }
     }
 }

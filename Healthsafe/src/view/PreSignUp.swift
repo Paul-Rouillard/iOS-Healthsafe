@@ -9,18 +9,51 @@
 import SwiftUI
 
 struct PreSignUp: View {
+    @State private var isPatient: Bool = false
+    @State private var isDoctor: Bool = false
+
+    var body: some View {
+        if isPatient {
+            return AnyView(SignUpClient(patient: NewPatient()))
+        } else if isDoctor {
+            return AnyView(SignUpMed(med: NewMed()))
+        } else {
+            return AnyView(PreSignUpView(isPatient: $isPatient, isDoctor: $isDoctor))
+        }
+    }
+}
+
+struct PreSignUpView: View {
+    @Binding var isPatient: Bool
+    @Binding var isDoctor: Bool
+
     var body: some View {
         VStack {
-            NavigationLink(destination: SignUpClient(patient: NewPatient())){
+//            NavigationLink(destination: SignUpClient(patient: NewPatient())) {
+//                Text("Vous êtes un patient")
+//                    .modifier(ButtonStyle())
+//            }
+            
+            Button(action: {
+                self.isPatient = true
+                print("")
+            }) {
                 Text("Vous êtes un patient")
+                    .modifier(ButtonStyle())
             }
-                .modifier(ButtonStyle())
             Spacer()
                 .frame(height: 100)
-            NavigationLink(destination: SignUpMed(med: NewMed())) {
-                    Text("Vous êtes un medecin")
+//            NavigationLink(destination: SignUpMed(med: NewMed())) {
+//                Text("Vous êtes un médecin")
+//                    .modifier(ButtonStyle())
+//            }
+            Button(action: {
+                self.isDoctor = true
+                print("")
+            }) {
+                Text("Vous êtes un medecin")
+                    .modifier(ButtonStyle())
             }
-                .modifier(ButtonStyle())
         }
     }
 }

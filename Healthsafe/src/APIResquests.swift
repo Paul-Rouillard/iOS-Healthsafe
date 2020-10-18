@@ -9,6 +9,7 @@
 import Foundation
 
 class NewMed: ObservableObject, Codable {
+
     enum CodingKeys: String, CodingKey {
         case lastName, firstName, age, phoneNumber, email, password, confirmationPassword, address, streetNumber, street, typeStreetNumber, typeStreet, zipCode, city, country, idNumber, expertiseDomain
     }
@@ -112,31 +113,47 @@ class NewMed: ObservableObject, Codable {
 
 class NewPatient: ObservableObject, Codable {
     enum CodingKeys: String, CodingKey {
-        case emailAddr, password
+        case lastName, firstName, age, phoneNumber, emailAddr, password, confirmationPassword, address, streetNumber, street, typeStreetNumber, typeStreet, zipCode, city, country, securityNbr
     }
 
     static let genders = ["Male", "Female"]
     @Published var indexGender = 0
     @Published var firstName: String = ""
     @Published var lastName: String = ""
-    @Published var age: String = ""
+    @Published var age: Int?
     @Published var birthday = Date()
-    @Published var phoneNumber: String = ""
-
     @Published var emailAddr: String = ""
+    @Published var phoneNumber: String = ""
     @Published var password: String = ""
     @Published var confirmationPassword: String = ""
 
-    @Published var streetNumber: Int = 0
-    @Published var doctor: String = ""
+    @Published var streetNumber: Int?
+//        enum typeStreetNumber: String, CaseIterable {
+//            case NO = ""
+//            case bis = "bis"
+//            case ter = "ter"
+//        }
     @Published var street: String = ""
-    @Published var zipCode: String = ""
+//        enum typeStreet: String, CaseIterable {
+//            case rue = "rue"
+//            case boulevard = "boulevard"
+//            case avenue = "avenue"
+//            case chemin = "chemin"
+//        }
+    static let typeStreetNbr = ["", "bis", "ter"]
+    @Published var typeStreetNumber: String = ""
+    @Published var indexStreetNbr = 0
+    static let typeStrt = ["rue", "boulevard", "avenue", "chemin"]
+    @Published var typeStreet: String = ""
+    @Published var indexStreet = 0
+
+    @Published var zipCode: Int?
     @Published var city: String = ""
     @Published var country: String = ""
     @Published var securityNbr: Int?
 
     var isValid: Bool  {
-        if (firstName.isEmpty || lastName.isEmpty || age.isEmpty || emailAddr.isEmpty || password.isEmpty || confirmationPassword.isEmpty || phoneNumber.isEmpty || street.isEmpty || zipCode.isEmpty || city.isEmpty || country.isEmpty || securityNbr != 150000000000000) {
+        if (firstName.isEmpty || lastName.isEmpty || age != nil || emailAddr.isEmpty || password.isEmpty || confirmationPassword.isEmpty || phoneNumber.isEmpty || street.isEmpty || zipCode != nil || city.isEmpty || country.isEmpty || securityNbr != 150000000000000) {
             return false
         }
         return true
@@ -146,33 +163,44 @@ class NewPatient: ObservableObject, Codable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-//        firstName = try container.decode(String.self, forKey: .firstName)
-//        lastName = try container.decode(String.self, forKey: .lastName)
-//        age = try container.decode(String.self, forKey: .age)
+        lastName = try container.decode(String.self, forKey: .lastName)
+        firstName = try container.decode(String.self, forKey: .firstName)
+        age = try container.decode(Int.self, forKey: .age)
 //        birthday = try container.decode(Date.self, forKey: .birthday)
-//        phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
+        phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
         emailAddr = try container.decode(String.self, forKey: .emailAddr)
         password = try container.decode(String.self, forKey: .password)
-//        securityNbr = try container.decode(Int.self, forKey: .securityNbr)
-//        doctor = try container.decode(String.self, forKey: .doctor)
-//        streetNumber = try container.decode(Int.self, forKey: .streetNumber)
-//        street = try container.decode(String.self, forKey: .street)
-//        zipCode = try container.decode(String.self, forKey: .zipCode)
-//        city = try container.decode(String.self, forKey: .city)
-//        country = try container.decode(String.self, forKey: .country)
+        confirmationPassword = try container.decode(String.self, forKey: .confirmationPassword)
+        let address = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .address)
+        streetNumber = try address.decode(Int.self, forKey: .streetNumber)
+        street = try address.decode(String.self, forKey: .street)
+        typeStreetNumber = try address.decode(String.self, forKey: .typeStreetNumber)
+        typeStreet = try address.decode(String.self, forKey: .typeStreet)
+        zipCode = try address.decode(Int.self, forKey: .zipCode)
+        city = try address.decode(String.self, forKey: .city)
+        country = try address.decode(String.self, forKey: .country)
+        securityNbr = try container.decode(Int.self, forKey: .securityNbr)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(firstName, forKey: .firstName)
-//        try container.encode(lastName, forKey: .lastName)
-//        try container.encode(age, forKey: .age)
+        try container.encode(firstName, forKey: .firstName)
+        try container.encode(lastName, forKey: .lastName)
+        try container.encode(age, forKey: .age)
 //        try container.encode(birthday, forKey: .birthday)
-//        try container.encode(phoneNumber, forKey: .phoneNumber)
+        try container.encode(phoneNumber, forKey: .phoneNumber)
         try container.encode(emailAddr, forKey: .emailAddr)
         try container.encode(password, forKey: .password)
-//        try container.encode(phoneNumber, forKey: .phoneNumber)
-//        try container.encode(securityNbr, forKey: .securityNbr)
+        try container.encode(phoneNumber, forKey: .phoneNumber)
+        try container.encode(securityNbr, forKey: .securityNbr)
+        var address = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .address)
+        try address.encode(streetNumber, forKey: .streetNumber)
+        try address.encode(street, forKey: .street)
+        try address.encode(typeStreetNumber, forKey: .typeStreetNumber)
+        try address.encode(typeStreet, forKey: .typeStreet)
+        try address.encode(zipCode, forKey: .zipCode)
+        try address.encode(city, forKey: .city)
+        try address.encode(country, forKey: .country)
 //        try container.encode(doctor, forKey: .doctor)
 //        try container.encode(streetNumber, forKey: .streetNumber)
 //        try container.encode(street, forKey: .street)
@@ -190,6 +218,41 @@ class NewPatient: ObservableObject, Codable {
     }
 }
 
+class Connexion: Codable, ObservableObject {
+    enum CodingKeys: String, CodingKey {
+        case emailAddr, password, _id, token, tokens
+    }
+
+    @Published var emailAddr: String = ""
+    @Published var password: String = ""
+    @Published var token: String = ""
+    @Published var _id: String = ""
+    
+    var checkEmpty: Bool {
+        if (emailAddr.isEmpty || password.isEmpty) {
+            return false
+        }
+        return true
+    }
+    
+    init() {    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        emailAddr = try container.decode(String.self, forKey: .emailAddr)
+        password = try container.decode(String.self, forKey: .password)
+        let tokens = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .tokens)
+        token = try tokens.decode(String.self, forKey: .token)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(emailAddr, forKey: .emailAddr)
+        try container.encode(password, forKey: .password)
+    }
+}
+
+
 class UserSettings: Codable, ObservableObject {
     enum CodingKeys: String, CodingKey {
         case emailAddr, password, token
@@ -197,6 +260,8 @@ class UserSettings: Codable, ObservableObject {
 
     @Published var loogedIn: Bool = false
     @Published var signIn: Bool = false
+    @Published var isDoctor: Bool = false
+    @Published var isPatient: Bool = false
     @Published var emailAddr: String = ""
     @Published var password: String = ""
     var token: String?

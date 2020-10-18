@@ -12,7 +12,22 @@ struct PersonnalInfo: View {
     @ObservedObject var patient: NewPatient
     @State private var confirmationMessage = ""
     @State private var showingCongirmation = false
-    
+    var dateFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter
+    }
+
+    var currentAge: Int {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let birthdate = calendar.startOfDay(for: patient.birthday)
+        let components = calendar.dateComponents([.year], from: birthdate, to: today)
+        return components.year ?? 0
+    }
+
     var body: some View {
         NavigationView {
             Form {
@@ -21,21 +36,21 @@ struct PersonnalInfo: View {
                         .modifier(FormTextFieldStyle())
                     TextField("Last Name", text: $patient.lastName)
                         .modifier(FormTextFieldStyle())
-                    TextField("Your age", text: $patient.age)
-                        .modifier(FormTextFieldStyle())
-                        .keyboardType(.numberPad)
                     DatePicker(selection: $patient.birthday, in: ...Date(), displayedComponents: .date) {
                         Text("Birthday date")
                             .modifier(FormStyle())
                     }
+                    Text("\(currentAge)")
+                        .multilineTextAlignment(.center)
+                        .modifier(FormStyle())
                 }
 
                 Section {
                     TextField("Security number", value: $patient.securityNbr, formatter: NumberFormatter())
                         .keyboardType(.numberPad)
                         .modifier(FormTextFieldStyle())
-                    TextField("Medecin traitant", text: $patient.doctor)
-                        .modifier(FormTextFieldStyle())
+//                    TextField("Medecin traitant", text: $patient.doctor)
+//                        .modifier(FormTextFieldStyle())
                 }
 
                 Section {
@@ -44,7 +59,7 @@ struct PersonnalInfo: View {
                     TextField("Street name", text: $patient.street)
                         .modifier(FormAddressStyle())
                     HStack {
-                        TextField("Post code", text: $patient.zipCode)
+                        TextField("Post code", value: $patient.zipCode, formatter: NumberFormatter())
                            .font(.custom("Raleway", size: 16))
                            .frame(width: 100.0, height: 30)
                            .keyboardType(.numberPad)

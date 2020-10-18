@@ -8,7 +8,9 @@
 
 import SwiftUI
 import Foundation
+#if canImport(CoreNFC)
 import CoreNFC
+#endif
 
 struct nfcButton : UIViewRepresentable {
     @Binding var data: String

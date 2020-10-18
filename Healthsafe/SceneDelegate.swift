@@ -22,6 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  /*
  **         Create the SwiftUI view that provides the window contents.
  */
+
+        let contentView = ContentView()
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = UIHostingController(rootView: contentView)
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+        
 //        let contentView = NavigationView {
 //            ContentView()
 //        }.navigationViewStyle(StackNavigationViewStyle())
@@ -30,13 +39,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(settings))
         
         // Use a UIHostingController as window root view controller.
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(UserSettings()))
-//            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
-            window.makeKeyAndVisible()
-        }
+//        if let windowScene = scene as? UIWindowScene {
+//            let window = UIWindow(windowScene: windowScene)
+//            window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(UserSettings()))
+////            window.rootViewController = UIHostingController(rootView: contentView)
+//            self.window = window
+//            window.makeKeyAndVisible()
+//        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
