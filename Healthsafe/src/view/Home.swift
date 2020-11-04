@@ -27,39 +27,40 @@ struct HomeView: View {
     @ObservedObject var connexion = Connexion()
 
     var body: some View {
-        Group {
-            VStack {
+        VStack {
+            Button(action: {
+                print("--------------\nlogging out...\n--------------")
+                do {
+                    try self.Deconnexion()
+                } catch {
+                    print("Error while signing off")
+                }
+            }) {
+                Text("Log out")
+                    .frame(width: 325, alignment: .trailing)
+                    .modifier(LabelStyle())
+            }.onTapGesture(perform: {
+                self.signOff = true
+            })
+            Spacer()
+            Text("NFC").font(.largeTitle).modifier(LabelStyle())
+            Spacer()
+                .frame(width: 50, height: 50)
+//            Text("Welcome \(name)").modifier(LabelStyle())
+            Text("Please select your plateform").modifier(LabelStyle())
+            Spacer()
+            HStack {
                 Button(action: {
-                    print("--------------\nlogging out...\n--------------")
-                    do {
-                        try self.Deconnexion()
-                    } catch {
-                        print("Error while signing off")
-                    }
-                }
-                ) {
-                    Text("Log out")
-                        .frame(width: 325, alignment: .topLeading)
-                        .modifier(LabelStyle())
-                }.onTapGesture(perform: {
-                    self.signOff = false
-                })
-                Spacer()
-                Text("NFC").font(.largeTitle).modifier(LabelStyle())
-                Spacer()
-                    .frame(width: 50, height: 50)
-    //            Text("Welcome \(name)").modifier(LabelStyle())
-                Text("Please select your plateform").modifier(LabelStyle())
-                Spacer()
-                HStack {
+                        
+                }) {
                     Image("logo_tel")
-                    Image("pc_bureau")
                 }
-                //nfcButton(data: $data)
-//                    .frame(width: 75.0, height: 20.0)
-//                    .modifier(ButtonStyle())
-                Spacer()
+                Image("pc_bureau")
             }
+            nfcButton(data: $data)
+                    .frame(width: 75.0, height: 20.0)
+                    .modifier(ButtonStyle())
+            Spacer()
         }
     }
 

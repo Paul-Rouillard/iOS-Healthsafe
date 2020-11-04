@@ -12,12 +12,12 @@ import Combine
 struct LoginFormView: View {
     @State private var showError: Bool = false
     @State private var showEmpty: Bool = false
-    @State private var showSignUp: Bool = false
     @State private var confirmation: String = ""
     @State private var showConfirmation: Bool = false
+    @State private var showSignUp: Bool = false
 
     @Binding var signInSuccess: Bool
-
+    @Binding var signUpClicked: Bool
     @ObservedObject var connexion: Connexion
 
     var body: some View {
@@ -32,17 +32,21 @@ struct LoginFormView: View {
             }
             .padding()
             Spacer()
-                .frame(height: 75.0)
+                .frame(height: 70.0)
             VStack {
-                TextField("ID", text: $connexion.emailAddr)
+                TextField("E-MAIL", text: $connexion.emailAddr)
                     .frame(width: 200.0)
                     .modifier(LabelStyle())
+                Divider()
+                    .padding(.horizontal, 30)
 
                 Spacer()
                     .frame(height: 30.0)
                 SecureField("PASSWORD", text: $connexion.password)
                     .frame(width: 200.0)
                     .modifier(LabelStyle())
+                Divider()
+                    .padding(.horizontal, 30)
             }
             Spacer()
                 .frame(height: 50.0)
@@ -70,20 +74,24 @@ struct LoginFormView: View {
                     Text("Connexion")
                         .modifier(ButtonStyle())
                 }
-                .padding(.horizontal, 25.0)
-                
+                    .padding(.horizontal, 25.0)
+
                 Spacer()
                     .frame(height: 25)
+
                 Button(action: {
                     print("inscription pressed")
-                    self.showSignUp = true
+//                    self.showSignUp = true
+                    self.signUpClicked = true
                 }) {
                     Text("Inscription")
                         .font(.custom("Raleway", size: 20))
-                        .modifier(ColourStyle())
-                }.sheet(isPresented: $showSignUp, content: {
-                    PreSignUp()
-                })
+//                        .underline()
+                        .modifier(ButtonStyleSecondary())
+                }
+//                .sheet(isPresented: $showSignUp, content: {
+//                    PreSignUp()
+//                })
             }
         }
     }
@@ -97,7 +105,7 @@ struct LoginFormView: View {
             print("Fail to encode newMed")
             return
         }
-        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/signin/create")!
+        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signin")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
@@ -126,15 +134,15 @@ struct LoginFormView: View {
 }
 
 struct ContentView: View {
-    
-    @State var signInSuccess = false
-
+    @State private var signInSuccess: Bool = false
+    @State private var signUpClicked: Bool = false
     var body: some View {
         if signInSuccess {
             return AnyView(Home())
-        }
-        else {
-            return AnyView(LoginFormView(signInSuccess: $signInSuccess, connexion: Connexion()))
+        } else if (signUpClicked) {
+            return AnyView(PreSignUp())
+        } else {
+            return AnyView(LoginFormView(signInSuccess: $signInSuccess, signUpClicked: $signUpClicked, connexion: Connexion()))
         }
     }
 }

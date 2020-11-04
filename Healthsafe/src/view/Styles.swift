@@ -21,11 +21,48 @@ struct LabelStyle: ViewModifier {
 struct ButtonStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
+            .frame(width: 250, height: 30, alignment: .center)
             .font(.custom("Raleway", size: 25))
             .padding()
             .foregroundColor(Color.white)
             .background(LinearGradient(gradient: Gradient(colors: [Color.init(red: 255/255, green: 28/255, blue: 78/255), Color.init(red: 255/255, green: 137/255, blue: 133/255)]), startPoint: .leading, endPoint: .trailing))
-            .cornerRadius(20.0)
+            .cornerRadius(50.0)
+    }
+}
+
+struct ButtonStyleSecondary: ViewModifier {
+    func body(content: Content) -> some View {
+        return content
+            .frame(width: 250, height: 30, alignment: .center)
+            .font(.custom("Raleway", size: 25))
+            .padding()
+            .modifier(ColourStyle())
+            .overlay(RoundedRectangle(cornerRadius: 50.0)
+                        .stroke(Color.init(red: 255/255, green: 88/255, blue: 108/255))
+            )
+    }
+}
+struct ButtonFormStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        return content
+            .frame(width: 150, height: 20, alignment: .center)
+            .font(.custom("Raleway", size: 18))
+            .padding()
+            .foregroundColor(Color.white)
+            .background(LinearGradient(gradient: Gradient(colors: [Color.init(red: 255/255, green: 28/255, blue: 78/255), Color.init(red: 255/255, green: 137/255, blue: 133/255)]), startPoint: .leading, endPoint: .trailing))
+            .cornerRadius(50.0)
+    }
+}
+struct ButtonFormStyleSecondary: ViewModifier {
+    func body(content: Content) -> some View {
+        return content
+            .frame(width: 150, height: 20, alignment: .center)
+            .font(.custom("Raleway", size: 18))
+            .padding()
+            .modifier(ColourStyle())
+            .overlay(RoundedRectangle(cornerRadius: 50.0)
+                        .stroke(Color.init(red: 255/255, green: 88/255, blue: 108/255))
+            )
     }
 }
 

@@ -11,14 +11,18 @@ import SwiftUI
 struct PreSignUp: View {
     @State private var isPatient: Bool = false
     @State private var isDoctor: Bool = false
+    @State private var backPressed: Bool = false
 
     var body: some View {
         if isPatient {
-            return AnyView(SignUpClient(patient: NewPatient()))
+            return AnyView(SignUpClient())
+//            return AnyView(SignUpClient(patient: NewPatient()))
         } else if isDoctor {
-            return AnyView(SignUpMed(med: NewMed()))
+            return AnyView(SignUpMed())
+        } else if (backPressed){
+            return AnyView(ContentView())
         } else {
-            return AnyView(PreSignUpView(isPatient: $isPatient, isDoctor: $isDoctor))
+            return AnyView(PreSignUpView(isPatient: $isPatient, isDoctor: $isDoctor, backPressed: $backPressed))
         }
     }
 }
@@ -26,14 +30,21 @@ struct PreSignUp: View {
 struct PreSignUpView: View {
     @Binding var isPatient: Bool
     @Binding var isDoctor: Bool
+    @Binding var backPressed: Bool
 
     var body: some View {
+        Button(action: {
+            print("back pressed - Returning to first View")
+            self.backPressed = true
+            }) {
+            Image(systemName: "chevron.backward")
+                .frame(alignment: .topLeading)
+                .foregroundColor(.blue)
+            Text("Back")
+                .frame(width: 325, alignment: .topLeading)
+        }
+        Spacer()
         VStack {
-//            NavigationLink(destination: SignUpClient(patient: NewPatient())) {
-//                Text("Vous êtes un patient")
-//                    .modifier(ButtonStyle())
-//            }
-            
             Button(action: {
                 self.isPatient = true
                 print("")
@@ -43,10 +54,6 @@ struct PreSignUpView: View {
             }
             Spacer()
                 .frame(height: 100)
-//            NavigationLink(destination: SignUpMed(med: NewMed())) {
-//                Text("Vous êtes un médecin")
-//                    .modifier(ButtonStyle())
-//            }
             Button(action: {
                 self.isDoctor = true
                 print("")
@@ -55,8 +62,10 @@ struct PreSignUpView: View {
                     .modifier(ButtonStyle())
             }
         }
+        Spacer()
     }
 }
+
 
 struct PreSignUp_Previews: PreviewProvider {
     static var previews: some View {
