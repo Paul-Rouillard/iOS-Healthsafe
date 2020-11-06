@@ -28,24 +28,11 @@ struct SignUpMedView: View {
     @State private var docContactInfo: Bool = false
     @State private var docSpecialisationInfo: Bool = false
     @State private var docPasswdInfo: Bool = false
+    
+//    @State private var correctAge = false
+    
     @State var confirmation: String = ""
     @State var showConfirmation: Bool = false
-    
-    var dateFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter
-    }
-
-    var currentAge: Int {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let birthdate = calendar.startOfDay(for: med.birthday)
-        let components = calendar.dateComponents([.year], from: birthdate, to: today)
-        return components.year ?? 0
-    }
 
     var body: some View {
         Button(action: {
@@ -62,28 +49,33 @@ struct SignUpMedView: View {
                 Group {
                     Form {
                         Section {
-                            TextField("Fisrt name", text: $med.firstName)
+                            TextField("First name", text: $med.firstName)
                                 .modifier(FormTextFieldStyle())
                             TextField("Last Name", text: $med.lastName)
                                 .modifier(FormTextFieldStyle())
-                            DatePicker(selection: $med.birthday, in: ...Date(), displayedComponents: .date) {
-                                Text("Birthday date")
-                                    .modifier(FormStyle())
-                            }
-                            Text("\(currentAge)")
+//                            DatePicker(selection: $med.birthday, in: ...Date(), displayedComponents: .date) {
+//                                Text("Birthday date")
+//                                    .modifier(FormStyle())
+//                            }
+                            TextField("Age", value: $med.age, formatter: NumberFormatter())
                                 .multilineTextAlignment(.center)
                                 .modifier(FormStyle())
                         }
                     }
+//                    if ($med.age! < 18) {
+//                        Text(" Erreur Vous devez être mageur !")
+//                        correctAge = true
+//                    }
                 }
                 Button (action: {
+
                     print("next group")
                     self.docPersonnalInfo = false
                     self.docAddressInfo = true
                 }){
                     Text("Suivant")
                         .modifier(ButtonFormStyle())
-                }
+                }//.disabled($correctAge)
             }.visibility(hidden: $docPersonnalInfo)
         } else if docAddressInfo {
             Group {
@@ -245,7 +237,6 @@ struct SignUpMedView: View {
     }
 
     func sendNewMed() {
-        med.age = currentAge
 //        print("""
 //            -----------------------------------------
 //            Printing JSON:

@@ -13,7 +13,7 @@ struct LabelStyle: ViewModifier {
         return content
             .modifier(ColourStyle())
             .font(.custom("Raleway", size: 18))
-            .multilineTextAlignment(.center)
+//            .multilineTextAlignment(.center)
             .frame(width: 300.0)
     }
 }
@@ -77,14 +77,14 @@ struct FormStyle: ViewModifier {
 struct FormTextFieldStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-            .multilineTextAlignment(.center)
+//            .multilineTextAlignment(.center)
             .font(.custom("Raleway", size: 16))
     }
 }
 struct FormAddressStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-            .multilineTextAlignment(.center)
+//            .multilineTextAlignment(.center)
             .font(.custom("Raleway", size: 16))
             .frame(height: 30)
     }

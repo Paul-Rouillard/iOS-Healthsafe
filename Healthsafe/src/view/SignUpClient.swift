@@ -26,90 +26,91 @@ struct SignUpClientView: View {
     @State private var patientAddressInfo: Bool = false
     @State private var patientContactInfo: Bool = false
     @State private var patientPasswdInfo: Bool = false
+    @State private var i: Int = 1
     @ObservedObject var patient: NewPatient
 
     var body: some View {
-        Button(action: {
+         Button(action: {
             self.backPressed = true
-            }) {
+         }) {
             Image(systemName: "chevron.backward")
                 .frame(alignment: .topLeading)
                 .foregroundColor(.blue)
             Text("Back")
                 .frame(width: 325, alignment: .topLeading)
-        }//.offset(x: -10.0, y:-420.0)
-//        ZStack {
-            if patientPersonnalInfo {
+        }
+        Text("Étape \(i)/4")
+            .frame(alignment: .topTrailing)
+            .modifier(FontStyle())
+        if patientPersonnalInfo {
+            Group {
                 Group {
-                    Group {
-                        Form {
-                            Section {
-                                TextField("Fisrt name", text: $patient.firstName)
-                                    .modifier(FormTextFieldStyle())
-                                TextField("Last Name", text: $patient.lastName)
-                                    .modifier(FormTextFieldStyle())
-                                DatePicker(selection: $patient.birthday, in: ...Date(), displayedComponents: .date) {
-                                    Text("Birthday date")
-                                        .modifier(FormStyle())
-                                }
-                                TextField("Age", value: $patient.age, formatter: NumberFormatter())
-                                    .multilineTextAlignment(.center)
-                                    .modifier(FormStyle())
-                            }
+                    Form {
+                        Section {
+                            TextField("First name", text: $patient.firstName)
+                                .modifier(FormTextFieldStyle())
+                            TextField("Last Name", text: $patient.lastName)
+                                .modifier(FormTextFieldStyle())
+                            TextField("Age", value: $patient.age, formatter: NumberFormatter())
+                                .multilineTextAlignment(.center)
+                                .modifier(FormTextFieldStyle())
                         }
                     }
-                    Button (action: {
-                        print("next group")
-                        self.patientPersonnalInfo = false
-                        self.patientAddressInfo = true
-                    }){
-                        Text("Suivant")
-                            .modifier(ButtonFormStyle())
-                    }
-                }.visibility(hidden: $patientPersonnalInfo)
-            } else if patientAddressInfo {
+                }
+                Button (action: {
+                    print("next group")
+                    self.i += 1
+                    self.patientPersonnalInfo = false
+                    self.patientAddressInfo = true
+                }){
+                    Text("Suivant")
+                        .modifier(ButtonFormStyle())
+                }
+            }.visibility(hidden: $patientPersonnalInfo)
+        } else if patientAddressInfo {
+            Group {
                 Group {
-                    Group {
-                        Form {
-                            Section {
-                                    TextField("Building number", value: $patient.streetNumber, formatter: NumberFormatter())
-                                        .keyboardType(.numberPad)
-                                    .modifier(FormTextFieldStyle())
-            //                        IndexSteetNbr(med: NewMed())
-                                    Picker("Number ext.", selection: $patient.indexStreetNbr) {
-                                        ForEach (0 ..< NewPatient.typeStreetNbr.count) {
-                                            Text(NewPatient.typeStreetNbr[$0])
-                                        }
-                                    }.pickerStyle(SegmentedPickerStyle())
+                    Form {
+                        Section {
+                                TextField("Building number", value: $patient.streetNumber, formatter: NumberFormatter())
+                                    .keyboardType(.numberPad)
+                                .modifier(FormTextFieldStyle())
+        //                        IndexSteetNbr(med: NewMed())
+                                Picker("Number ext.", selection: $patient.indexStreetNbr) {
+                                    ForEach (0 ..< NewPatient.typeStreetNbr.count) {
+                                        Text(NewPatient.typeStreetNbr[$0])
+                                    }
+                                }.pickerStyle(SegmentedPickerStyle())
 
-                                    Picker("Street desc.", selection: $patient.indexStreet) {
-                                        ForEach (0 ..< NewPatient.typeStrt.count) {
-                                            Text(NewPatient.typeStrt[$0])
-                                        }
-                                    }.pickerStyle(SegmentedPickerStyle())
-    //                                .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
-                                    TextField("Street name", text: $patient.street)
-                                        .modifier(FormAddressStyle())
-
-                                HStack {
-                                    TextField("Post code", value: $patient.zipCode, formatter: NumberFormatter())
-                                       .font(.custom("Raleway", size: 16))
-                                       .frame(width: 100.0, height: 30)
-                                       .keyboardType(.numberPad)
-                                    Text(" | ")
-                                        .font(.custom("Raleway", size: 18))
-                                        .foregroundColor(Color.black)
-                                    TextField("City", text: $patient.city)
-                                        .font(.custom("Raleway", size: 16))
-                                        .frame(height: 30)
-                                }
-                                TextField("Country", text: $patient.country)
+                                Picker("Street desc.", selection: $patient.indexStreet) {
+                                    ForEach (0 ..< NewPatient.typeStrt.count) {
+                                        Text(NewPatient.typeStrt[$0])
+                                    }
+                                }.pickerStyle(SegmentedPickerStyle())
+//                                .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
+                                TextField("Street name", text: $patient.street)
                                     .modifier(FormAddressStyle())
+
+                            HStack {
+                                TextField("Post code", value: $patient.zipCode, formatter: NumberFormatter())
+                                   .font(.custom("Raleway", size: 16))
+                                   .frame(width: 100.0, height: 30)
+                                   .keyboardType(.numberPad)
+                                Text(" | ")
+                                    .font(.custom("Raleway", size: 18))
+                                    .foregroundColor(Color.black)
+                                TextField("City", text: $patient.city)
+                                    .font(.custom("Raleway", size: 16))
+                                    .frame(height: 30)
                             }
+                            TextField("Country", text: $patient.country)
+                                .modifier(FormAddressStyle())
                         }
                     }
+                }
                 HStack {
                     Button (action: {
+                        self.i = 1
                         print("Going back to Personnal info")
                         self.patientPersonnalInfo = true
                         self.patientAddressInfo = false
@@ -118,6 +119,7 @@ struct SignUpClientView: View {
                             .modifier(ButtonFormStyleSecondary())
                     }
                     Button (action: {
+                        self.i += 1
                         print("next group")
                         print(self.patientPersonnalInfo)
                         self.patientAddressInfo = false
@@ -142,6 +144,7 @@ struct SignUpClientView: View {
                 }
                 HStack {
                     Button (action: {
+                        self.i -= 1
                         print("Going back to address Info")
                         self.patientAddressInfo = true
                         self.patientContactInfo = false
@@ -150,6 +153,7 @@ struct SignUpClientView: View {
                             .modifier(ButtonFormStyleSecondary())
                     }
                     Button (action: {
+                        self.i += 1
                         print("next group - Password Info")
                         print(self.patientPersonnalInfo)
                         self.patientContactInfo = false
@@ -174,6 +178,7 @@ struct SignUpClientView: View {
                 }
                 HStack {
                     Button(action: {
+                        self.i -= 1
                         print("Going back to Contact info")
                         self.patientPasswdInfo = false
                         self.patientContactInfo = true

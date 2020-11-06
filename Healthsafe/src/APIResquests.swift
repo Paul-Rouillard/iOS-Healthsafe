@@ -18,7 +18,7 @@ class NewMed: ObservableObject, Codable {
     @Published var indexGender = 0
     @Published var firstName: String = ""
     @Published var lastName: String = ""
-    @Published var age: Int = 0
+    @Published var age: Int?
     @Published var birthday: Date = Date()
     @Published var phoneNumber: String = ""
 
@@ -54,7 +54,7 @@ class NewMed: ObservableObject, Codable {
     @Published var expertiseDomain: String = ""
 
     var isValid: Bool  {
-        if (firstName.isEmpty || lastName.isEmpty || age >= 18 || email.isEmpty || password.isEmpty || confirmationPassword.isEmpty || streetNumber != nil || street.isEmpty || zipCode != nil || city.isEmpty || country.isEmpty || idNumber.isEmpty) {
+        if (firstName.isEmpty || lastName.isEmpty || age != nil || email.isEmpty || password.isEmpty || confirmationPassword.isEmpty || streetNumber != nil || street.isEmpty || zipCode != nil || city.isEmpty || country.isEmpty || idNumber.isEmpty) {
             return false
         }
         return true
@@ -220,16 +220,16 @@ class NewPatient: ObservableObject, Codable {
 
 class Connexion: Codable, ObservableObject {
     enum CodingKeys: String, CodingKey {
-        case emailAddr, password, _id, token, tokens
+        case email, password, _id, token, tokens
     }
 
-    @Published var emailAddr: String = ""
+    @Published var email: String = ""
     @Published var password: String = ""
     @Published var token: String = ""
     @Published var _id: String = ""
     
     var checkEmpty: Bool {
-        if (emailAddr.isEmpty || password.isEmpty) {
+        if (email.isEmpty || password.isEmpty) {
             return false
         }
         return true
@@ -239,7 +239,7 @@ class Connexion: Codable, ObservableObject {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        emailAddr = try container.decode(String.self, forKey: .emailAddr)
+        email = try container.decode(String.self, forKey: .email)
         password = try container.decode(String.self, forKey: .password)
         let tokens = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .tokens)
         token = try tokens.decode(String.self, forKey: .token)
@@ -247,7 +247,7 @@ class Connexion: Codable, ObservableObject {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(emailAddr, forKey: .emailAddr)
+        try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
     }
 }
@@ -255,26 +255,26 @@ class Connexion: Codable, ObservableObject {
 
 class UserSettings: Codable, ObservableObject {
     enum CodingKeys: String, CodingKey {
-        case emailAddr, password, token
+        case email, password, token
     }
 
     @Published var loogedIn: Bool = false
     @Published var signIn: Bool = false
     @Published var isDoctor: Bool = false
     @Published var isPatient: Bool = false
-    @Published var emailAddr: String = ""
+    @Published var email: String = ""
     @Published var password: String = ""
     var token: String?
     
     var checkEmpty: Bool {
-        if (emailAddr.isEmpty || password.isEmpty) {
+        if (email.isEmpty || password.isEmpty) {
             return false
         }
         return true
     }
     
     var checkEmail: Bool {
-        if (!emailAddr.isValidEmail) {
+        if (!email.isValidEmail) {
             return false
         }
         return true
@@ -291,14 +291,14 @@ class UserSettings: Codable, ObservableObject {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        emailAddr = try container.decode(String.self, forKey: .emailAddr)
+        email = try container.decode(String.self, forKey: .email)
         password = try container.decode(String.self, forKey: .password)
         token = try container.decode(String.self, forKey: .token)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(emailAddr, forKey: .emailAddr)
+        try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
     }
 }
