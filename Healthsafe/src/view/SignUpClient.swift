@@ -10,12 +10,13 @@ import SwiftUI
 
 struct SignUpClient: View {
     @State private var backPressed: Bool = false
+    @StateObject var newPatient = NewPatient()
 
     var body: some View {
         if backPressed {
             return AnyView(PreSignUp())
         } else {
-            return AnyView(SignUpClientView(backPressed: $backPressed, patient: NewPatient()))
+            return AnyView(SignUpClientView(backPressed: $backPressed, patient: newPatient))
         }
     }
 }
@@ -26,91 +27,90 @@ struct SignUpClientView: View {
     @State private var patientAddressInfo: Bool = false
     @State private var patientContactInfo: Bool = false
     @State private var patientPasswdInfo: Bool = false
-    @State private var i: Int = 1
     @ObservedObject var patient: NewPatient
 
     var body: some View {
-         Button(action: {
+        Button(action: {
             self.backPressed = true
-         }) {
+            }) {
             Image(systemName: "chevron.backward")
                 .frame(alignment: .topLeading)
                 .foregroundColor(.blue)
             Text("Back")
                 .frame(width: 325, alignment: .topLeading)
-        }
-        Text("Étape \(i)/4")
-            .frame(alignment: .topTrailing)
-            .modifier(FontStyle())
-        if patientPersonnalInfo {
-            Group {
+        }//.offset(x: -10.0, y:-420.0)
+//        ZStack {
+            if patientPersonnalInfo {
                 Group {
-                    Form {
-                        Section {
-                            TextField("First name", text: $patient.firstName)
-                                .modifier(FormTextFieldStyle())
-                            TextField("Last Name", text: $patient.lastName)
-                                .modifier(FormTextFieldStyle())
-                            TextField("Age", value: $patient.age, formatter: NumberFormatter())
-                                .multilineTextAlignment(.center)
-                                .modifier(FormTextFieldStyle())
-                        }
-                    }
-                }
-                Button (action: {
-                    print("next group")
-                    self.i += 1
-                    self.patientPersonnalInfo = false
-                    self.patientAddressInfo = true
-                }){
-                    Text("Suivant")
-                        .modifier(ButtonFormStyle())
-                }
-            }.visibility(hidden: $patientPersonnalInfo)
-        } else if patientAddressInfo {
-            Group {
-                Group {
-                    Form {
-                        Section {
-                                TextField("Building number", value: $patient.streetNumber, formatter: NumberFormatter())
+                    Group {
+                        Form {
+                            Section {
+                                TextField("First name", text: $patient.firstName)
+                                    .modifier(FormTextFieldStyle())
+                                TextField("Last Name", text: $patient.lastName)
+                                    .modifier(FormTextFieldStyle())
+//                                DatePicker(selection: $patient.birthday, in: ...Date(), displayedComponents: .date) {
+//                                    Text("Birthday date")
+//                                        .modifier(FormStyle())
+//                                }
+                                TextField("Age", value: $patient.age, formatter: NumberFormatter())
+                                    .modifier(FormTextFieldStyle())
                                     .keyboardType(.numberPad)
-                                .modifier(FormTextFieldStyle())
-        //                        IndexSteetNbr(med: NewMed())
-                                Picker("Number ext.", selection: $patient.indexStreetNbr) {
-                                    ForEach (0 ..< NewPatient.typeStreetNbr.count) {
-                                        Text(NewPatient.typeStreetNbr[$0])
-                                    }
-                                }.pickerStyle(SegmentedPickerStyle())
-
-                                Picker("Street desc.", selection: $patient.indexStreet) {
-                                    ForEach (0 ..< NewPatient.typeStrt.count) {
-                                        Text(NewPatient.typeStrt[$0])
-                                    }
-                                }.pickerStyle(SegmentedPickerStyle())
-//                                .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
-                                TextField("Street name", text: $patient.street)
-                                    .modifier(FormAddressStyle())
-
-                            HStack {
-                                TextField("Post code", value: $patient.zipCode, formatter: NumberFormatter())
-                                   .font(.custom("Raleway", size: 16))
-                                   .frame(width: 100.0, height: 30)
-                                   .keyboardType(.numberPad)
-                                Text(" | ")
-                                    .font(.custom("Raleway", size: 18))
-                                    .foregroundColor(Color.black)
-                                TextField("City", text: $patient.city)
-                                    .font(.custom("Raleway", size: 16))
-                                    .frame(height: 30)
                             }
-                            TextField("Country", text: $patient.country)
-                                .modifier(FormAddressStyle())
                         }
                     }
-                }
+                    Button (action: {
+                        print("next group")
+                        self.patientPersonnalInfo = false
+                        self.patientAddressInfo = true
+                    }){
+                        Text("Suivant")
+                            .modifier(ButtonFormStyle())
+                    }
+                }.visibility(hidden: $patientPersonnalInfo)
+            } else if patientAddressInfo {
+                Group {
+                    Group {
+                        Form {
+                            Section {
+                                    TextField("Building number", value: $patient.streetNumber, formatter: NumberFormatter())
+                                        .keyboardType(.numberPad)
+                                    .modifier(FormTextFieldStyle())
+            //                        IndexSteetNbr(patient: Newpatient())
+                                    Picker("Number ext.", selection: $patient.indexStreetNbr) {
+                                        ForEach (0 ..< NewPatient.typeStreetNbr.count) {
+                                            Text(NewPatient.typeStreetNbr[$0])
+                                        }
+                                    }.pickerStyle(SegmentedPickerStyle())
+
+                                    Picker("Street desc.", selection: $patient.indexStreet) {
+                                        ForEach (0 ..< NewPatient.typeStrt.count) {
+                                            Text(NewPatient.typeStrt[$0])
+                                        }
+                                    }.pickerStyle(SegmentedPickerStyle())
+    //                                .navigationBarBackButtonHidden(true) //enlever le bouton retour. mais jusqu'où ça marche ?
+                                    TextField("Street name", text: $patient.street)
+                                        .modifier(FormAddressStyle())
+
+                                HStack {
+                                    TextField("Post code", value: $patient.zipCode, formatter: NumberFormatter())
+                                       .font(.custom("Raleway", size: 16))
+                                       .frame(width: 100.0, height: 30)
+                                       .keyboardType(.numberPad)
+                                    Text(" | ")
+                                        .font(.custom("Raleway", size: 18))
+                                        .foregroundColor(Color.black)
+                                    TextField("City", text: $patient.city)
+                                        .font(.custom("Raleway", size: 16))
+                                        .frame(height: 30)
+                                }
+                                TextField("Country", text: $patient.country)
+                                    .modifier(FormAddressStyle())
+                            }
+                        }
+                    }
                 HStack {
                     Button (action: {
-                        self.i = 1
                         print("Going back to Personnal info")
                         self.patientPersonnalInfo = true
                         self.patientAddressInfo = false
@@ -119,7 +119,6 @@ struct SignUpClientView: View {
                             .modifier(ButtonFormStyleSecondary())
                     }
                     Button (action: {
-                        self.i += 1
                         print("next group")
                         print(self.patientPersonnalInfo)
                         self.patientAddressInfo = false
@@ -137,14 +136,16 @@ struct SignUpClientView: View {
                         Section {
                             TextField("Phone number", text: $patient.phoneNumber)
                                 .modifier(FormTextFieldStyle())
+                                .keyboardType(.phonePad)
                             TextField("Email", text: $patient.emailAddr)
+                                .autocapitalization(.none)
+                                .keyboardType(.emailAddress)
                                 .modifier(FormTextFieldStyle())
                         }
                     }
                 }
                 HStack {
                     Button (action: {
-                        self.i -= 1
                         print("Going back to address Info")
                         self.patientAddressInfo = true
                         self.patientContactInfo = false
@@ -153,7 +154,6 @@ struct SignUpClientView: View {
                             .modifier(ButtonFormStyleSecondary())
                     }
                     Button (action: {
-                        self.i += 1
                         print("next group - Password Info")
                         print(self.patientPersonnalInfo)
                         self.patientContactInfo = false
@@ -178,7 +178,6 @@ struct SignUpClientView: View {
                 }
                 HStack {
                     Button(action: {
-                        self.i -= 1
                         print("Going back to Contact info")
                         self.patientPasswdInfo = false
                         self.patientContactInfo = true
@@ -203,35 +202,62 @@ struct SignUpClientView: View {
     }
 
     func submit() {
+        print("""
+            -----------------------------------------
+            Printing JSON:
+            lastName: \(patient.lastName)
+            firstName: \(patient.firstName)
+            age: \(patient.age)
+            -----
+            phoneNbr: \(patient.phoneNumber)
+            email: \(patient.emailAddr)
+            -----
+            password: \(patient.password)
+            confirpwd: \(patient.confirmationPassword)
+            -----
+            Address :
+            streetNumber: \(patient.streetNumber)
+            typeStreetNumber: \($patient.typeStreetNumber)
+            typeStreet: \($patient.typeStreet)
+            street: \(patient.street)
+            zipCode: \(patient.zipCode)
+            city: \(patient.city)
+            country \(patient.country)
+
+            ----------------------------------------
+            END FIRST PART OF JSON
+            """)
         guard let encoded = try? JSONEncoder().encode(patient) else {
-            print("Fail to encode newMed")
+            print("Fail to encode newpatient")
             return
         }
-        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signin")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        request.httpBody = encoded
-
-        print(String(data: encoded, encoding: .utf8)!)
-
-        URLSession.shared.dataTask(with: url) { data, res, error in
-            guard let httpResponse = res as? HTTPURLResponse,
-                    (200...299).contains(httpResponse.statusCode) else {
-                    self.handleServerError(res)
-                return
-            }
-            if let data = data {
-                let decoder = JSONDecoder()
-                if let json = try? decoder.decode(NewPatient.self, from: data) {
-                    print(json)
-                }
-                else {
-                    let dataString = String(decoding: data, as: UTF8.self)
-                    print("Invalid response \(dataString)")
-                }
-            }
-        }.resume()
+        print("\n--------------------\n encoded JSON : \(encoded)\n\n")
+        
+//        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signin")!
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "POST"
+//        request.httpBody = encoded
+//
+//        print(String(data: encoded, encoding: .utf8)!)
+//
+//        URLSession.shared.dataTask(with: url) { data, res, error in
+//            guard let httpResponse = res as? HTTPURLResponse,
+//                    (200...299).contains(httpResponse.statusCode) else {
+//                    self.handleServerError(res)
+//                return
+//            }
+//            if let data = data {
+//                let decoder = JSONDecoder()
+//                if let json = try? decoder.decode(NewPatient.self, from: data) {
+//                    print(json)
+//                }
+//                else {
+//                    let dataString = String(decoding: data, as: UTF8.self)
+//                    print("Invalid response \(dataString)")
+//                }
+//            }
+//        }.resume()
     }
     
 }

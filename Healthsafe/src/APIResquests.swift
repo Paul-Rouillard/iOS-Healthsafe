@@ -113,7 +113,7 @@ class NewMed: ObservableObject, Codable {
 
 class NewPatient: ObservableObject, Codable {
     enum CodingKeys: String, CodingKey {
-        case lastName, firstName, age, phoneNumber, emailAddr, password, confirmationPassword, address, streetNumber, street, typeStreetNumber, typeStreet, zipCode, city, country, securityNbr
+        case lastName, firstName, age, phoneNumber, emailAddr = "email", password, confirmationPassword, address, streetNumber, street, typeStreetNumber, typeStreet, zipCode, city, country, securityNbr
     }
 
     static let genders = ["Male", "Female"]
@@ -121,25 +121,14 @@ class NewPatient: ObservableObject, Codable {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var age: Int?
-    @Published var birthday = Date()
     @Published var emailAddr: String = ""
     @Published var phoneNumber: String = ""
     @Published var password: String = ""
     @Published var confirmationPassword: String = ""
 
     @Published var streetNumber: Int?
-//        enum typeStreetNumber: String, CaseIterable {
-//            case NO = ""
-//            case bis = "bis"
-//            case ter = "ter"
-//        }
+
     @Published var street: String = ""
-//        enum typeStreet: String, CaseIterable {
-//            case rue = "rue"
-//            case boulevard = "boulevard"
-//            case avenue = "avenue"
-//            case chemin = "chemin"
-//        }
     static let typeStreetNbr = ["", "bis", "ter"]
     @Published var typeStreetNumber: String = ""
     @Published var indexStreetNbr = 0
@@ -166,7 +155,6 @@ class NewPatient: ObservableObject, Codable {
         lastName = try container.decode(String.self, forKey: .lastName)
         firstName = try container.decode(String.self, forKey: .firstName)
         age = try container.decode(Int.self, forKey: .age)
-//        birthday = try container.decode(Date.self, forKey: .birthday)
         phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
         emailAddr = try container.decode(String.self, forKey: .emailAddr)
         password = try container.decode(String.self, forKey: .password)
@@ -187,10 +175,10 @@ class NewPatient: ObservableObject, Codable {
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(age, forKey: .age)
-//        try container.encode(birthday, forKey: .birthday)
         try container.encode(phoneNumber, forKey: .phoneNumber)
         try container.encode(emailAddr, forKey: .emailAddr)
         try container.encode(password, forKey: .password)
+        try container.encode(confirmationPassword, forKey: .confirmationPassword)
         try container.encode(phoneNumber, forKey: .phoneNumber)
         try container.encode(securityNbr, forKey: .securityNbr)
         var address = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .address)

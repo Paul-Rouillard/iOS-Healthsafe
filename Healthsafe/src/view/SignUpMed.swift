@@ -28,9 +28,6 @@ struct SignUpMedView: View {
     @State private var docContactInfo: Bool = false
     @State private var docSpecialisationInfo: Bool = false
     @State private var docPasswdInfo: Bool = false
-    
-//    @State private var correctAge = false
-    
     @State var confirmation: String = ""
     @State var showConfirmation: Bool = false
 
@@ -62,20 +59,15 @@ struct SignUpMedView: View {
                                 .modifier(FormStyle())
                         }
                     }
-//                    if ($med.age! < 18) {
-//                        Text(" Erreur Vous devez être mageur !")
-//                        correctAge = true
-//                    }
                 }
                 Button (action: {
-
                     print("next group")
                     self.docPersonnalInfo = false
                     self.docAddressInfo = true
                 }){
                     Text("Suivant")
                         .modifier(ButtonFormStyle())
-                }//.disabled($correctAge)
+                }
             }.visibility(hidden: $docPersonnalInfo)
         } else if docAddressInfo {
             Group {
@@ -237,61 +229,61 @@ struct SignUpMedView: View {
     }
 
     func sendNewMed() {
-//        print("""
-//            -----------------------------------------
-//            Printing JSON:
-//            lastName: \(med.lastName)
-//            firstName: \(med.firstName)
-//            birthday: \(med.birthday)
-//            age: \(med.age)
-//            phoneNbr: \(med.phoneNumber)
-//            email: \(med.email)
-//            password: \(med.password)
-//            confirpwd: \(med.confirmationPassword)
-//            expDomain: \(med.expertiseDomain)
-//            idNumber: \(med.idNumber)
-//            -----
-//            Address :
-//            streetNumber: \(med.streetNumber)
-//            typeStreetNumber: \(med.typeStreetNumber)
-//            typeStreet: \(med.typeStreet)
-//            street: \(med.street)
-//            zipCode: \(med.zipCode)
-//            city: \(med.city)
-//            country \(med.country)
+        print("""
+            -----------------------------------------
+            Printing JSON:
+            lastName: \(med.lastName)
+            firstName: \(med.firstName)
+            birthday: \(med.birthday)
+            age: \(med.age)
+            phoneNbr: \(med.phoneNumber)
+            email: \(med.email)
+            password: \(med.password)
+            confirpwd: \(med.confirmationPassword)
+            expDomain: \(med.expertiseDomain)
+            idNumber: \(med.idNumber)
+            -----
+            Address :
+            streetNumber: \(med.streetNumber)
+            typeStreetNumber: \(med.typeStreetNumber)
+            typeStreet: \(med.typeStreet)
+            street: \(med.street)
+            zipCode: \(med.zipCode)
+            city: \(med.city)
+            country \(med.country)
+
+            ----------------------------------------
+            END FIRST PART OF JSON
+            """)
+//        guard let encoded = try? JSONEncoder().encode(med) else {
+//            print("Fail to encode newMed")
+//            return
+//        }
+//        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signupProfile/create")!
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "POST"
+//        request.httpBody = encoded
 //
-//            ----------------------------------------
-//            END FIRST PART OF JSON
-//            """)
-        guard let encoded = try? JSONEncoder().encode(med) else {
-            print("Fail to encode newMed")
-            return
-        }
-        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signupProfile/create")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        request.httpBody = encoded
-
-        print(String(data: encoded, encoding: .utf8)!)
-
-        URLSession.shared.dataTask(with: url) { data, res, error in
-            guard let httpResponse = res as? HTTPURLResponse,
-                    (200...299).contains(httpResponse.statusCode) else {
-                    self.handleServerError(res)
-                return
-            }
-            if let data = data {
-                let decoder = JSONDecoder()
-                if let json = try? decoder.decode(NewMed.self, from: data) {
-                    print(json)
-                }
-                else {
-                    let dataString = String(decoding: data, as: UTF8.self)
-                    print("Invalid response \(dataString)")
-                }
-            }
-        }.resume()
+//        print(String(data: encoded, encoding: .utf8)!)
+//
+//        URLSession.shared.dataTask(with: url) { data, res, error in
+//            guard let httpResponse = res as? HTTPURLResponse,
+//                    (200...299).contains(httpResponse.statusCode) else {
+//                    self.handleServerError(res)
+//                return
+//            }
+//            if let data = data {
+//                let decoder = JSONDecoder()
+//                if let json = try? decoder.decode(NewMed.self, from: data) {
+//                    print(json)
+//                }
+//                else {
+//                    let dataString = String(decoding: data, as: UTF8.self)
+//                    print("Invalid response \(dataString)")
+//                }
+//            }
+//        }.resume()
     }
 }
 

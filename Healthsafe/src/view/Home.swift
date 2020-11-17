@@ -16,7 +16,7 @@ struct Home: View {
         if signOff {
             return AnyView(ContentView())
         } else {
-            return AnyView(HomeView(signOff: $signOff))
+            return AnyView(HomeView(signOff: $signOff, connexion: Connexion()))
         }
     }
 }
@@ -24,7 +24,7 @@ struct Home: View {
 struct HomeView: View {
     @State var data: String = ""
     @Binding var signOff: Bool
-    @ObservedObject var connexion = Connexion()
+    @ObservedObject var connexion: Connexion
 
     var body: some View {
         VStack {
