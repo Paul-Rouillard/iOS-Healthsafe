@@ -77,14 +77,12 @@ struct FormStyle: ViewModifier {
 struct FormTextFieldStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-//            .multilineTextAlignment(.center)
             .font(.custom("Raleway", size: 16))
     }
 }
 struct FormAddressStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
-//            .multilineTextAlignment(.center)
             .font(.custom("Raleway", size: 16))
             .frame(height: 30)
     }

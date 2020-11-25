@@ -63,7 +63,6 @@ struct LoginFormView: View {
                     if (connexion.checkEmpty) {
                         do {
                             try self.connect()
-                            self.signInSuccess = true
                         }
                         catch {
                             self.showError = true
@@ -98,8 +97,9 @@ struct LoginFormView: View {
         }
     }
 
-    func handleServerError(_ res: URLResponse?) {
-        print("ERROR: Status Code: \(res!): the status code MUST be between 200 and 299")
+    func handleServerError(_ res: URLResponse) {
+        print("ERROR: Status Code: \(res): the status code MUST be between 200 and 299")
+        self.showError = true
     }
 
     func connect() throws {
@@ -118,9 +118,10 @@ struct LoginFormView: View {
         URLSession.shared.dataTask(with: url) { data, res, error in
             guard let httpResponse = res as? HTTPURLResponse,
                     (200...299).contains(httpResponse.statusCode) else {
-                    self.handleServerError(res)
+                    self.handleServerError(res!)
                 return
             }
+            self.signInSuccess = true
             if let data = data {
                 let decoder = JSONDecoder()
                 if let json = try? decoder.decode(Connexion.self, from: data) {
@@ -138,13 +139,15 @@ struct LoginFormView: View {
 struct ContentView: View {
     @State private var signInSuccess: Bool = false
     @State private var signUpClicked: Bool = false
+    @StateObject var connexion = Connexion()
+
     var body: some View {
         if signInSuccess {
             return AnyView(Home())
         } else if (signUpClicked) {
             return AnyView(PreSignUp())
         } else {
-            return AnyView(LoginFormView(signInSuccess: $signInSuccess, signUpClicked: $signUpClicked, connexion: Connexion()))
+            return AnyView(LoginFormView(signInSuccess: $signInSuccess, signUpClicked: $signUpClicked, connexion: connexion))
         }
     }
 }

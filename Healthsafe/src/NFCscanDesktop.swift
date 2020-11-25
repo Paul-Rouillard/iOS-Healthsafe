@@ -1,8 +1,8 @@
 //
-//  NFCscan.swift
+//  NFCscanDesktop.swift
 //  Healthsafe
 //
-//  Created by Paul Rouillard on 19/08/2020.
+//  Created by Paul Rouillard on 22/11/2020.
 //  Copyright © 2020 Healthsafe. All rights reserved.
 //
 
@@ -12,26 +12,27 @@ import Foundation
 import CoreNFC
 #endif
 
-struct nfcButton : UIViewRepresentable {
+struct nfcButtonDesktop : UIViewRepresentable {
     @Binding var data: String
 
-    func makeUIView(context: UIViewRepresentableContext<nfcButton>) -> UIButton {
+    func makeUIView(context: UIViewRepresentableContext<nfcButtonDesktop>) -> UIButton {
         let button = UIButton()
-        button.setTitle("Read NFC", for: .normal)
+        button.setImage(UIImage(named: "pc_bureau"), for: .normal)
         button.addTarget(context.coordinator, action: #selector(context.coordinator.beginScan(_:)), for: .touchUpInside)
         return button
     }
 
-    func updateUIView(_ uiView: UIButton, context: UIViewRepresentableContext<nfcButton>) {
+
+    func updateUIView(_ uiView: UIButton, context: UIViewRepresentableContext<nfcButtonDesktop>) {
         // Do nothing
     }
 
-    func makeCoordinator() -> nfcButton.Coordinator {
-        return Coordinator(data: $data)
+    func makeCoordinator() -> nfcButtonDesktop.CoordinatorDesktop {
+        return CoordinatorDesktop(data: $data)
     }
 
 
-    class Coordinator : NSObject, NFCNDEFReaderSessionDelegate {
+    class CoordinatorDesktop : NSObject, NFCNDEFReaderSessionDelegate {
         @Binding var data: String
         var session : NFCNDEFReaderSession?
 
@@ -78,5 +79,9 @@ struct nfcButton : UIViewRepresentable {
             self.data = payload
             }
 
+        func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
+            
+        }
+        
     }
 }

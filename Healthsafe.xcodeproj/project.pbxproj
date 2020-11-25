@@ -10,12 +10,9 @@
 		402851B725096D0700CC2DEE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402851B625096D0700CC2DEE /* StringExtensions.swift */; };
 		4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189524CB0ED700D0299F /* PreSignUp.swift */; };
 		4029189824CB137000D0299F /* SignUpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189724CB137000D0299F /* SignUpClient.swift */; };
-		4029189A24CDE9A100D0299F /* PatientAddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189924CDE9A100D0299F /* PatientAddressInfo.swift */; };
 		4048C3DB254F7AF60052F0F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */; };
-		4069B21F2545DFC1002905B1 /* PatientContactInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4069B21E2545DFC1002905B1 /* PatientContactInfo.swift */; };
-		4069B2242545E56D002905B1 /* PatientPasswdInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4069B2232545E56D002905B1 /* PatientPasswdInfo.swift */; };
 		4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */; };
-		409E600F24ED59B000B64B7E /* NFCscan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409E600E24ED59B000B64B7E /* NFCscan.swift */; };
+		409E600F24ED59B000B64B7E /* NFCscanMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409E600E24ED59B000B64B7E /* NFCscanMobile.swift */; };
 		40C442C624B231BE002989C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C524B231BE002989C5 /* AppDelegate.swift */; };
 		40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C724B231BE002989C5 /* SceneDelegate.swift */; };
 		40C442CA24B231BE002989C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C924B231BE002989C5 /* ContentView.swift */; };
@@ -29,6 +26,7 @@
 		40C442FC24B36266002989C5 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FB24B36266002989C5 /* SignUp.swift */; };
 		40C442FE24B623EA002989C5 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FD24B623EA002989C5 /* Styles.swift */; };
 		40C4430024B646E2002989C5 /* APIResquests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442FF24B646E2002989C5 /* APIResquests.swift */; };
+		40ED06F0256AD60500E6A202 /* NFCscanDesktop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED06EF256AD60500E6A202 /* NFCscanDesktop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,12 +50,9 @@
 		402851B625096D0700CC2DEE /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		4029189524CB0ED700D0299F /* PreSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSignUp.swift; sourceTree = "<group>"; };
 		4029189724CB137000D0299F /* SignUpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpClient.swift; sourceTree = "<group>"; };
-		4029189924CDE9A100D0299F /* PatientAddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientAddressInfo.swift; sourceTree = "<group>"; };
 		4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		4069B21E2545DFC1002905B1 /* PatientContactInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientContactInfo.swift; sourceTree = "<group>"; };
-		4069B2232545E56D002905B1 /* PatientPasswdInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientPasswdInfo.swift; sourceTree = "<group>"; };
 		4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMed.swift; sourceTree = "<group>"; };
-		409E600E24ED59B000B64B7E /* NFCscan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCscan.swift; sourceTree = "<group>"; };
+		409E600E24ED59B000B64B7E /* NFCscanMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCscanMobile.swift; sourceTree = "<group>"; };
 		409E601024EF235200B64B7E /* Healthsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Healthsafe.entitlements; sourceTree = "<group>"; };
 		40C442C224B231BE002989C5 /* Healthsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Healthsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C442C524B231BE002989C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +73,7 @@
 		40C442FB24B36266002989C5 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		40C442FD24B623EA002989C5 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		40C442FF24B646E2002989C5 /* APIResquests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResquests.swift; sourceTree = "<group>"; };
+		40ED06EF256AD60500E6A202 /* NFCscanDesktop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCscanDesktop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +108,8 @@
 				40C442FF24B646E2002989C5 /* APIResquests.swift */,
 				402851B625096D0700CC2DEE /* StringExtensions.swift */,
 				4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */,
-				409E600E24ED59B000B64B7E /* NFCscan.swift */,
+				409E600E24ED59B000B64B7E /* NFCscanMobile.swift */,
+				40ED06EF256AD60500E6A202 /* NFCscanDesktop.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -122,9 +119,6 @@
 			children = (
 				40C442C924B231BE002989C5 /* ContentView.swift */,
 				40C442F924B35F52002989C5 /* Home.swift */,
-				4029189924CDE9A100D0299F /* PatientAddressInfo.swift */,
-				4069B21E2545DFC1002905B1 /* PatientContactInfo.swift */,
-				4069B2232545E56D002905B1 /* PatientPasswdInfo.swift */,
 				4029189524CB0ED700D0299F /* PreSignUp.swift */,
 				4029189724CB137000D0299F /* SignUpClient.swift */,
 				4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */,
@@ -332,17 +326,15 @@
 				40C442FC24B36266002989C5 /* SignUp.swift in Sources */,
 				4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */,
 				40C4430024B646E2002989C5 /* APIResquests.swift in Sources */,
-				4069B2242545E56D002905B1 /* PatientPasswdInfo.swift in Sources */,
 				40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */,
 				4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */,
-				4069B21F2545DFC1002905B1 /* PatientContactInfo.swift in Sources */,
 				4029189824CB137000D0299F /* SignUpClient.swift in Sources */,
-				4029189A24CDE9A100D0299F /* PatientAddressInfo.swift in Sources */,
 				40C442FA24B35F52002989C5 /* Home.swift in Sources */,
 				4048C3DB254F7AF60052F0F3 /* ViewExtensions.swift in Sources */,
+				40ED06F0256AD60500E6A202 /* NFCscanDesktop.swift in Sources */,
 				40C442F824B24586002989C5 /* Drop.swift in Sources */,
 				40C442CA24B231BE002989C5 /* ContentView.swift in Sources */,
-				409E600F24ED59B000B64B7E /* NFCscan.swift in Sources */,
+				409E600F24ED59B000B64B7E /* NFCscanMobile.swift in Sources */,
 				402851B725096D0700CC2DEE /* StringExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

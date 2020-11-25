@@ -50,16 +50,9 @@ struct HomeView: View {
             Text("Please select your plateform").modifier(LabelStyle())
             Spacer()
             HStack {
-                Button(action: {
-                        
-                }) {
-                    Image("logo_tel")
-                }
-                Image("pc_bureau")
+                nfcButton(data: $data)
+                nfcButtonDesktop(data: $data)
             }
-            nfcButton(data: $data)
-                    .frame(width: 75.0, height: 20.0)
-                    .modifier(ButtonStyle())
             Spacer()
         }
     }
@@ -73,7 +66,7 @@ struct HomeView: View {
             print("Fail to encode newMed")
             return
         }
-        let url = URL(string: "https://healthsafe-api-beta.herokuapp.com/api/logout")!
+        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/logout")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
