@@ -11,12 +11,14 @@ import SwiftUI
 struct Home: View {
     @State var data: String = ""
     @State var signOff: Bool = false
+    @ObservedObject var connexion: Connexion
+    @StateObject var deconnexion = Deconnexion()
    
     var body: some View {
         if signOff {
             return AnyView(ContentView())
         } else {
-            return AnyView(HomeView(signOff: $signOff, connexion: Connexion()))
+            return AnyView(HomeView(signOff: $signOff, connexion: connexion, deconnexion: deconnexion))
         }
     }
 }
@@ -25,13 +27,14 @@ struct HomeView: View {
     @State var data: String = ""
     @Binding var signOff: Bool
     @ObservedObject var connexion: Connexion
+    @ObservedObject var deconnexion: Deconnexion
 
     var body: some View {
         VStack {
             Button(action: {
                 print("--------------\nlogging out...\n--------------")
                 do {
-                    try self.Deconnexion()
+                    try self.SignOut()
                 } catch {
                     print("Error while signing off")
                 }
@@ -61,19 +64,20 @@ struct HomeView: View {
         print("ERROR: Status Code: \(res!): the status code MUST be between 200 and 299")
     }
 
-    func Deconnexion() throws {
-        guard let encoded = try? JSONEncoder().encode(connexion) else {
-            print("Fail to encode newMed")
+    func SignOut() throws {
+        guard let encoded = try? JSONEncoder().encode(deconnexion) else {
+            print("Fail to encode Deconnexion")
             return
         }
-        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/logout")!
+        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/logoutall")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         request.httpBody = encoded
 
         print(String(data: encoded, encoding: .utf8)!)
-        URLSession.shared.dataTask(with: url) { data, res, error in
+
+        URLSession.shared.dataTask(with: request) { data, res, error in
             guard let httpResponse = res as? HTTPURLResponse,
                     (200...299).contains(httpResponse.statusCode) else {
                     self.handleServerError(res)
@@ -93,8 +97,10 @@ struct HomeView: View {
     }
 }
 
+#if DEBUG
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        Home(connexion: Connexion())
     }
 }
+#endif

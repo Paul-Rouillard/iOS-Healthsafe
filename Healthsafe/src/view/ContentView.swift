@@ -107,7 +107,8 @@ struct LoginFormView: View {
             print("Fail to encode newMed")
             return
         }
-        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/signin")!
+        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/drSignin")!
+//        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/patientSignin")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
@@ -143,7 +144,7 @@ struct ContentView: View {
 
     var body: some View {
         if signInSuccess {
-            return AnyView(Home())
+            return AnyView(Home(connexion: connexion))
         } else if (signUpClicked) {
             return AnyView(PreSignUp())
         } else {
