@@ -262,6 +262,7 @@ struct SignUpClientView: View {
             if let data = data {
                 let decoder = JSONDecoder()
                 if let json = try? decoder.decode(NewPatient.self, from: data) {
+                    print("you are sign up!")
                     print(json)
                 }
                 else {

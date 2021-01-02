@@ -11,21 +11,25 @@ import SwiftUI
 struct Home: View {
     @State var data: String = ""
     @State var signOff: Bool = false
+    @State var showNFCMobile: Bool = false
     @ObservedObject var connexion: Connexion
     @StateObject var deconnexion = Deconnexion()
    
     var body: some View {
         if signOff {
             return AnyView(ContentView())
+        } else if showNFCMobile {
+            return AnyView(NFCMobileView(data: $data))
         } else {
-            return AnyView(HomeView(signOff: $signOff, connexion: connexion, deconnexion: deconnexion))
+            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile,connexion: connexion, deconnexion: deconnexion))
         }
     }
 }
 
 struct HomeView: View {
-    @State var data: String = ""
+    @Binding var data: String
     @Binding var signOff: Bool
+    @Binding var showNFCMobile: Bool
     @ObservedObject var connexion: Connexion
     @ObservedObject var deconnexion: Deconnexion
 
@@ -52,8 +56,9 @@ struct HomeView: View {
 //            Text("Welcome \(name)").modifier(LabelStyle())
             Text("Please select your plateform").modifier(LabelStyle())
             Spacer()
+//            Text(data)
             HStack {
-                nfcButton(data: $data)
+                nfcButton(data: $data, showData: $showNFCMobile)
                 nfcButtonDesktop(data: $data)
             }
             Spacer()

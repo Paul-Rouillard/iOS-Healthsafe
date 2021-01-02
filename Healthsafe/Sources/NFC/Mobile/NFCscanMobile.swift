@@ -14,6 +14,7 @@ import CoreNFC
 
 struct nfcButton : UIViewRepresentable {
     @Binding var data: String
+    @Binding var showData: Bool
 
     func makeUIView(context: UIViewRepresentableContext<nfcButton>) -> UIButton {
         let button = UIButton()
@@ -28,12 +29,13 @@ struct nfcButton : UIViewRepresentable {
     }
 
     func makeCoordinator() -> nfcButton.Coordinator {
-        return Coordinator(data: $data)
+        return Coordinator(data: $data, view: $showData)
     }
 
 
     class Coordinator : NSObject, NFCNDEFReaderSessionDelegate {
         @Binding var data: String
+        @Binding var showData: Bool
         var session : NFCNDEFReaderSession?
 
         @objc func beginScan(_ sender: Any) {
@@ -46,8 +48,9 @@ struct nfcButton : UIViewRepresentable {
             session?.begin()
         }
 
-        init(data: Binding<String>) {
+        init(data: Binding<String>, view: Binding<Bool>) {
             _data = data
+            _showData = view
         }
 
         func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
@@ -67,28 +70,15 @@ struct nfcButton : UIViewRepresentable {
         }
 
         func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-//            for message in messages {
-//                    for record in message.records {
-//                        if let string = String(data: record.payload, encoding: .ascii) {
-//                            print(string)
-//                        }
-//                    }
-//                }
-            guard
-                let nfcMess = messages.first,
-                let record = nfcMess.records.first,
-                record.typeNameFormat == .absoluteURI || record.typeNameFormat == .nfcWellKnown,
-                let payload = String(data: record.payload, encoding: .utf8)
-            else {
-                return
-            }
-            print(payload)
-            self.data = payload
-            }
+            let payload = String(data: messages.first!.records.first!.payload, encoding: .utf8)
+            print(payload as Any)
+            self.data = payload!
 
-        func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
-            
+            //go to Mobile view.
+            self.showData = true
         }
-        
+
+        func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {    }
+
     }
 }

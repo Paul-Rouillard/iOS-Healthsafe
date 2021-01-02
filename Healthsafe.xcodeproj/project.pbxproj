@@ -3,14 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		402851B725096D0700CC2DEE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402851B625096D0700CC2DEE /* StringExtensions.swift */; };
 		4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189524CB0ED700D0299F /* PreSignUp.swift */; };
 		4029189824CB137000D0299F /* SignUpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029189724CB137000D0299F /* SignUpClient.swift */; };
+		4038E835259C8B930067E655 /* NFCModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4038E834259C8B930067E655 /* NFCModels.swift */; };
+		4038E83B25A083790067E655 /* StateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4038E83A25A083790067E655 /* StateExtension.swift */; };
+		4038E84025A090C70067E655 /* NFCwriteMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4038E83F25A090C70067E655 /* NFCwriteMobile.swift */; };
 		4048C3DB254F7AF60052F0F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */; };
+		40634148258CB2E4003C63D3 /* NFCMobileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40634147258CB2E4003C63D3 /* NFCMobileView.swift */; };
 		4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */; };
 		409E600F24ED59B000B64B7E /* NFCscanMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409E600E24ED59B000B64B7E /* NFCscanMobile.swift */; };
 		40C442C624B231BE002989C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C524B231BE002989C5 /* AppDelegate.swift */; };
@@ -50,7 +54,11 @@
 		402851B625096D0700CC2DEE /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		4029189524CB0ED700D0299F /* PreSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSignUp.swift; sourceTree = "<group>"; };
 		4029189724CB137000D0299F /* SignUpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpClient.swift; sourceTree = "<group>"; };
+		4038E834259C8B930067E655 /* NFCModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCModels.swift; sourceTree = "<group>"; };
+		4038E83A25A083790067E655 /* StateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateExtension.swift; sourceTree = "<group>"; };
+		4038E83F25A090C70067E655 /* NFCwriteMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCwriteMobile.swift; sourceTree = "<group>"; };
 		4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		40634147258CB2E4003C63D3 /* NFCMobileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCMobileView.swift; sourceTree = "<group>"; };
 		4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMed.swift; sourceTree = "<group>"; };
 		409E600E24ED59B000B64B7E /* NFCscanMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCscanMobile.swift; sourceTree = "<group>"; };
 		409E601024EF235200B64B7E /* Healthsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Healthsafe.entitlements; sourceTree = "<group>"; };
@@ -101,24 +109,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		40783A2F24D9755A00AC7A35 /* src */ = {
+		4038E83925A083540067E655 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				40783A3024D9758E00AC7A35 /* view */,
-				40C442FF24B646E2002989C5 /* APIResquests.swift */,
 				402851B625096D0700CC2DEE /* StringExtensions.swift */,
 				4048C3DA254F7AF60052F0F3 /* ViewExtensions.swift */,
-				409E600E24ED59B000B64B7E /* NFCscanMobile.swift */,
-				40ED06EF256AD60500E6A202 /* NFCscanDesktop.swift */,
+				4038E83A25A083790067E655 /* StateExtension.swift */,
 			);
-			path = src;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
-		40783A3024D9758E00AC7A35 /* view */ = {
+		4038E84425A090CF0067E655 /* NFC */ = {
+			isa = PBXGroup;
+			children = (
+				4038E84625A090F70067E655 /* Desktop */,
+				4038E84525A090EF0067E655 /* Mobile */,
+			);
+			path = NFC;
+			sourceTree = "<group>";
+		};
+		4038E84525A090EF0067E655 /* Mobile */ = {
+			isa = PBXGroup;
+			children = (
+				409E600E24ED59B000B64B7E /* NFCscanMobile.swift */,
+				4038E83F25A090C70067E655 /* NFCwriteMobile.swift */,
+			);
+			path = Mobile;
+			sourceTree = "<group>";
+		};
+		4038E84625A090F70067E655 /* Desktop */ = {
+			isa = PBXGroup;
+			children = (
+				40ED06EF256AD60500E6A202 /* NFCscanDesktop.swift */,
+			);
+			path = Desktop;
+			sourceTree = "<group>";
+		};
+		4038E84725A091130067E655 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				40C442FF24B646E2002989C5 /* APIResquests.swift */,
+				4038E834259C8B930067E655 /* NFCModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		40783A2F24D9755A00AC7A35 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4038E84725A091130067E655 /* Models */,
+				4038E84425A090CF0067E655 /* NFC */,
+				4038E83925A083540067E655 /* Extensions */,
+				40783A3024D9758E00AC7A35 /* View */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		40783A3024D9758E00AC7A35 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				40C442C924B231BE002989C5 /* ContentView.swift */,
 				40C442F924B35F52002989C5 /* Home.swift */,
+				40634147258CB2E4003C63D3 /* NFCMobileView.swift */,
 				4029189524CB0ED700D0299F /* PreSignUp.swift */,
 				4029189724CB137000D0299F /* SignUpClient.swift */,
 				4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */,
@@ -126,7 +178,7 @@
 				40C442F724B24586002989C5 /* Drop.swift */,
 				40C442FD24B623EA002989C5 /* Styles.swift */,
 			);
-			path = view;
+			path = View;
 			sourceTree = "<group>";
 		};
 		40C442B924B231BE002989C5 = {
@@ -159,7 +211,7 @@
 				40C442D024B231C1002989C5 /* LaunchScreen.storyboard */,
 				40C442CD24B231C1002989C5 /* Preview Content */,
 				40C442C724B231BE002989C5 /* SceneDelegate.swift */,
-				40783A2F24D9755A00AC7A35 /* src */,
+				40783A2F24D9755A00AC7A35 /* Sources */,
 			);
 			path = Healthsafe;
 			sourceTree = "<group>";
@@ -206,6 +258,8 @@
 			dependencies = (
 			);
 			name = Healthsafe;
+			packageProductDependencies = (
+			);
 			productName = Healthsafe;
 			productReference = 40C442C224B231BE002989C5 /* Healthsafe.app */;
 			productType = "com.apple.product-type.application";
@@ -278,6 +332,9 @@
 				Base,
 			);
 			mainGroup = 40C442B924B231BE002989C5;
+			packageReferences = (
+				4018805E25767D0300EB912B /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 40C442C324B231BE002989C5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -322,13 +379,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				40C442C624B231BE002989C5 /* AppDelegate.swift in Sources */,
+				4038E835259C8B930067E655 /* NFCModels.swift in Sources */,
 				40C442FE24B623EA002989C5 /* Styles.swift in Sources */,
 				40C442FC24B36266002989C5 /* SignUp.swift in Sources */,
 				4029189624CB0ED700D0299F /* PreSignUp.swift in Sources */,
 				40C4430024B646E2002989C5 /* APIResquests.swift in Sources */,
 				40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */,
+				4038E83B25A083790067E655 /* StateExtension.swift in Sources */,
 				4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */,
+				4038E84025A090C70067E655 /* NFCwriteMobile.swift in Sources */,
 				4029189824CB137000D0299F /* SignUpClient.swift in Sources */,
+				40634148258CB2E4003C63D3 /* NFCMobileView.swift in Sources */,
 				40C442FA24B35F52002989C5 /* Home.swift in Sources */,
 				4048C3DB254F7AF60052F0F3 /* ViewExtensions.swift in Sources */,
 				40ED06F0256AD60500E6A202 /* NFCscanDesktop.swift in Sources */,
@@ -668,6 +729,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4018805E25767D0300EB912B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 40C442BA24B231BE002989C5 /* Project object */;
 }
