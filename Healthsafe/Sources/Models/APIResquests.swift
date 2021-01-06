@@ -303,6 +303,5 @@ class Deconnexion: ObservableObject, Encodable {
         try container.encode(sessionID, forKey: .sessionID)
         try container.encode(token, forKey: .token)
     }
-
 }
 
