@@ -12,28 +12,31 @@ import Foundation
 import CoreNFC
 #endif
 
-struct nfcButtonDesktop : UIViewRepresentable {
+struct NFCButtonDesktop : UIViewRepresentable {
     @Binding var data: String
+    @Binding var view: Bool
 
-    func makeUIView(context: UIViewRepresentableContext<nfcButtonDesktop>) -> UIButton {
+    func makeUIView(context: UIViewRepresentableContext<NFCButtonDesktop>) -> UIButton {
         let button = UIButton()
+//        button.setImage(UIImage(named: "desktopFinal"), for: .normal)
         button.setImage(UIImage(named: "pc_bureau"), for: .normal)
         button.addTarget(context.coordinator, action: #selector(context.coordinator.beginScan(_:)), for: .touchUpInside)
         return button
     }
 
 
-    func updateUIView(_ uiView: UIButton, context: UIViewRepresentableContext<nfcButtonDesktop>) {
+    func updateUIView(_ uiView: UIButton, context: UIViewRepresentableContext<NFCButtonDesktop>) {
         // Do nothing
     }
 
-    func makeCoordinator() -> nfcButtonDesktop.CoordinatorDesktop {
-        return CoordinatorDesktop(data: $data)
+    func makeCoordinator() -> NFCButtonDesktop.CoordinatorDesktop {
+        return CoordinatorDesktop(data: $data, view: $view)
     }
 
 
     class CoordinatorDesktop : NSObject, NFCNDEFReaderSessionDelegate {
         @Binding var data: String
+        @Binding var initiatePingPong: Bool
         var session : NFCNDEFReaderSession?
 
         @objc func beginScan(_ sender: Any) {
@@ -46,8 +49,9 @@ struct nfcButtonDesktop : UIViewRepresentable {
             session?.begin()
         }
 
-        init(data: Binding<String>) {
+        init(data: Binding<String>, view: Binding<Bool>) {
             _data = data
+            _initiatePingPong = view
         }
 
         func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
@@ -67,21 +71,15 @@ struct nfcButtonDesktop : UIViewRepresentable {
         }
 
         func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-            guard
-                let nfcMess = messages.first,
-                let record = nfcMess.records.first,
-                record.typeNameFormat == .absoluteURI || record.typeNameFormat == .nfcWellKnown,
-                let payload = String(data: record.payload, encoding: .utf8)
-            else {
-                return
-            }
-            print(payload)
-            self.data = payload
-            }
+            let payload = String(data: messages.first!.records.first!.payload, encoding: .utf8)
+            print(payload as Any)
+            self.data = payload!
 
-        func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
-            
+            // go to desktopView
+            self.initiatePingPong = true
         }
-        
+
+        func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {    }
+
     }
 }

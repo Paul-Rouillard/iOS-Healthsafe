@@ -8,8 +8,7 @@
 
 import Foundation
 
-// This structure will not be used. It allows to know what should we get form the NDEF tag and the order to display information.
-struct NFCData {
+struct NFCData: Codable {
     var Id: String = ""
     var lastName: String = ""
     var firstName: String = ""

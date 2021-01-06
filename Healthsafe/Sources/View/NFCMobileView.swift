@@ -7,103 +7,133 @@
 //
 
 import SwiftUI
-
-struct NFCMobileView: View {
+struct NFCMobileContoler: View {
+    @State var backPressed: Bool = false
     @Binding var data: String
-    @State var deciphered: [String:String] = [:] //<- Make this a Dictionary type
+    @Binding var nfcData: NFCData
 
     var body: some View {
-        ZStack {
-            Form {
-                Section {
-                    HStack {
-                        Text("Last name")
-                        TextField("", text: _deciphered.binding("lastName"))
-                    }
-                    HStack {
-                        Text("First name")
-                        TextField("", text: _deciphered.binding("firstName"))
-                    }
-                    HStack {
-                        Text("Gender")
-                        TextField("", text:  _deciphered.binding("gender"))
-                    }
-                    HStack {
-                        Text("Age")
-                        TextField("", text:  _deciphered.binding("age"))
-                    }
+        if backPressed {
+            return AnyView(Home(connexion: Connexion()))
+        } else {
+            return AnyView(NFCMobileView(data: $data, nfcData: $nfcData, backPressed: $backPressed))
+        }
+    }
+}
+
+struct NFCMobileView: View {
+    @State var allowModifications: Bool = true
+    @Binding var data: String
+    @Binding var nfcData: NFCData
+    @Binding var backPressed: Bool
+//    @State var deciphered: [String:String] = [:] //<- Make this a Dictionary type
+
+    var body: some View {
+        Button(action: {
+            self.backPressed = true
+            }) {
+            Image(systemName: "chevron.backward")
+                .frame(alignment: .topLeading)
+                .foregroundColor(.blue)
+            Text("Back")
+                .frame(width: 325, alignment: .topLeading)
+        }
+        Form {
+            Section {
+                HStack {
+                    Text("Last name")
+                    TextField("", text: $nfcData.lastName)
                 }
-                Section {
-                    HStack {
-                        Text("Height")
-                        TextField("", text:  _deciphered.binding("height"))
-                    }
-                    HStack {
-                        Text("Weight")
-                        TextField("", text:  _deciphered.binding("wight"))
-                    }
+                HStack {
+                    Text("First name")
+                    TextField("", text: $nfcData.firstName)
                 }
-                Section {
-                    HStack {
-                        Text("Medical history")
-                        TextField("", text:  _deciphered.binding("medicalHistory"))
-                    }
-                    HStack {
-                        Text("Treatement")
-                        TextField("", text:  _deciphered.binding("treatements"))
-                    }
-                    HStack {
-                        Text("Allergies")
-                        TextField("", text:  _deciphered.binding("allergies"))
-                    }
-                    HStack {
-                        Text("Blood type")
-                        TextField("", text:  _deciphered.binding("bloodType"))
-                    }
+                HStack {
+                    Text("Gender")
+                    TextField("", text: $nfcData.gender)
                 }
-                Section {
-                    HStack {
-                        Text("Emergency nbr")
-                        TextField("", text:  _deciphered.binding("emergencyNumber"))
-                    }
-                    HStack {
-                        Text("Doctor")
-                        TextField("", text:  _deciphered.binding("doctor"))
-                    }
-                    HStack {
-                        Text("Social number")
-                        TextField("", text:  _deciphered.binding("socialNumber"))
-                    }
-                    HStack {
-                        Text("Organ doner")
-                        TextField("", text:  _deciphered.binding("organDonation"))
-                    }
+                HStack {
+                    Text("Age")
+                    TextField("", text: $nfcData.age)
                 }
             }
-            .onAppear {
-                //↓ No `var` here
-                deciphered = data.split(separator: "\n").reduce(into: [String: String]()) {
-                    let str = $1.split(separator: ":")
-                    if let first = str.first, let value = str.last {
-                        $0[String(first)] = String(value)
-                    }
+            Section {
+                HStack {
+                    Text("Height")
+                    TextField("", text: $nfcData.height)
+                }
+                HStack {
+                    Text("Weight")
+                    TextField("", text: $nfcData.weight)
                 }
             }
-            Spacer()
-            VStack {
-                Button(action: {
-                    
-                }) {
-                    Text("Modifier")
-                        .modifier(ButtonStyleSecondary())
+            Section {
+                HStack {
+                    Text("Medical history")
+                    TextField("", text: $nfcData.medicalHistory)
                 }
-                Button(action: {
-                    
-                }) {
-                    Text("Update")
-                        .modifier(ButtonStyle())
+                HStack {
+                    Text("Treatement")
+                    TextField("", text: $nfcData.treatments)
+                }
+                HStack {
+                    Text("Allergies")
+                    TextField("", text: $nfcData.allergies)
+                }
+                HStack {
+                    Text("Blood type")
+                    TextField("", text: $nfcData.bloodType)
                 }
             }
+            Section {
+                HStack {
+                    Text("Emergency number")
+                    TextField("", text: $nfcData.emergencyNumber)
+                }
+                HStack {
+                    Text("Doctor")
+                    TextField("", text: $nfcData.doctor)
+                }
+                HStack {
+                    Text("Social number")
+                    TextField("", text: $nfcData.socialNumber)
+                }
+                HStack {
+                    Text("Organ doner")
+                    TextField("", text: $nfcData.organDonation)
+                }
+            }
+        }.disabled(allowModifications)
+//            .onAppear {
+//                //↓ No `var` here
+//                deciphered = data.split(separator: "\n").reduce(into: [String: String]()) {
+//                    let str = $1.split(separator: ":")
+//                    if let first = str.first, let value = str.last {
+//                        $0[String(first)] = String(value)
+//                    }
+//                }
+//            }
+        HStack {
+            Button(action: {
+                self.allowModifications = false
+            }) {
+                Text("Modifier")
+                    .modifier(ButtonFormStyleSecondary())
+            }
+//            Button(action: {
+//                print("\(self.nfcData.lastName)")
+//                print(self.data)
+//                self.data = "allergies:\(self.nfcData.allergies)\nlastName:\(self.nfcData.lastName)\n\n"
+//                print(self.data)
+//            }) {
+//                Text("UPDATE - test")
+//            }
+            NFCWriteButton(data: $data, dataToWrite: $nfcData)
+                .modifier(ButtonFormStyle())
+//                .onTapGesture {
+//                    self.data = "allergies:\(self.nfcData.allergies)\nlastName:\(self.nfcData.lastName)\ngender:\(self.nfcData.gender)\nweight:\(self.nfcData.weight)\nsocialNumber:\(self.nfcData.socialNumber)\nemergencyNumber:\(self.nfcData.emergencyNumber)\nbloodType:\(self.nfcData.bloodType)\ntreatments:\(self.nfcData.treatments)\ndoctor:\(self.nfcData.doctor)\nfirstName:\(self.nfcData.firstName)\norganDonation:\(self.nfcData.organDonation)\nId:\(self.nfcData.Id)\nmedicalHistory:\(self.nfcData.medicalHistory)\nage:\(self.nfcData.age)\nheight:\(self.nfcData.height)\n"
+//                    print(".onTapGesture\n\(self.data)\n")
+//                }
         }
     }
 }

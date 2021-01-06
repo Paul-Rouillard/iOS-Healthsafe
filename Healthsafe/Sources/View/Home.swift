@@ -12,6 +12,8 @@ struct Home: View {
     @State var data: String = ""
     @State var signOff: Bool = false
     @State var showNFCMobile: Bool = false
+    @State var showNFCDesktop: Bool = false
+    @State var nfcData: NFCData = NFCData()
     @ObservedObject var connexion: Connexion
     @StateObject var deconnexion = Deconnexion()
    
@@ -19,9 +21,11 @@ struct Home: View {
         if signOff {
             return AnyView(ContentView())
         } else if showNFCMobile {
-            return AnyView(NFCMobileView(data: $data))
+            return AnyView(NFCMobileContoler(data: $data, nfcData: $nfcData))
+        } else if showNFCDesktop {
+            return AnyView(NFCDesktopControler(data: $data, nfcData: $nfcData))
         } else {
-            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile,connexion: connexion, deconnexion: deconnexion))
+            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile, showNFCDesktop: $showNFCDesktop, nfcData: $nfcData ,connexion: connexion, deconnexion: deconnexion))
         }
     }
 }
@@ -30,6 +34,8 @@ struct HomeView: View {
     @Binding var data: String
     @Binding var signOff: Bool
     @Binding var showNFCMobile: Bool
+    @Binding var showNFCDesktop: Bool
+    @Binding var nfcData: NFCData
     @ObservedObject var connexion: Connexion
     @ObservedObject var deconnexion: Deconnexion
 
@@ -58,8 +64,10 @@ struct HomeView: View {
             Spacer()
 //            Text(data)
             HStack {
-                nfcButton(data: $data, showData: $showNFCMobile)
-                nfcButtonDesktop(data: $data)
+                NFCButtonMobile(data: $data, showData: $showNFCMobile, storeNFC: $nfcData)
+//                    .frame(width: 150.0, height: 150.0)
+                NFCButtonDesktop(data: $data, view: $showNFCDesktop)
+//                    .frame(width: 150.0, height: 150.0)
             }
             Spacer()
         }
