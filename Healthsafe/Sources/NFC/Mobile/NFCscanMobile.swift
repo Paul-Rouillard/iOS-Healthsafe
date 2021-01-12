@@ -157,22 +157,23 @@ struct NFCButtonMobile : UIViewRepresentable {
                         print(json)
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd"
-
-                        self.storeNFC.lastName = json.lastName
-                        self.storeNFC.firstName = json.firstName
-                        self.storeNFC.gender = json.gender
-                        self.storeNFC.age = json.age
-                        self.storeNFC.height = json.height
-                        self.storeNFC.weight = json.weight
-                        self.storeNFC.medicalHistory = json.medicalHistory
-                        self.storeNFC.treatments = json.treatments
-                        self.storeNFC.allergies = json.allergies
-                        self.storeNFC.bloodType = json.bloodType
-                        self.storeNFC.emergencyNumber = json.emergencyNumber
-                        self.storeNFC.doctor = json.doctor
-                        self.storeNFC.socialNumber = json.socialNumber
-                        self.storeNFC.organDonation = json.organDonation
-                        self.storeNFC.bDay = dateFormatter.date(from: json.birthDay)!
+                        DispatchQueue.main.async {
+                            self.storeNFC.lastName = json.lastName
+                            self.storeNFC.firstName = json.firstName
+                            self.storeNFC.gender = json.gender
+                            self.storeNFC.age = json.age
+                            self.storeNFC.height = json.height
+                            self.storeNFC.weight = json.weight
+                            self.storeNFC.medicalHistory = json.medicalHistory
+                            self.storeNFC.treatments = json.treatments
+                            self.storeNFC.allergies = json.allergies
+                            self.storeNFC.bloodType = json.bloodType
+                            self.storeNFC.emergencyNumber = json.emergencyNumber
+                            self.storeNFC.doctor = json.doctor
+                            self.storeNFC.socialNumber = json.socialNumber
+                            self.storeNFC.organDonation = json.organDonation
+                            self.storeNFC.bDay = dateFormatter.date(from: json.birthDay)!
+                        }
                     }
                     else {
                         let dataString = String(decoding: data, as: UTF8.self)

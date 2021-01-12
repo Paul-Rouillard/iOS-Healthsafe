@@ -286,21 +286,21 @@ class SessionID: ObservableObject, Codable {
 }
 
 class Deconnexion: ObservableObject, Encodable {
-    var token = [Token]()
-    var _id: String = ""
-    var sessionID: String = ""
-    
     enum CodingKeys : String, CodingKey {
         case _id = "id", token, sessionID
     }
 
+    var token: String = ""
+    var _id: String = ""
+    var sessionID: String = ""
+    
     init() {    }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         _id = try container.decode(String.self, forKey: ._id)
         sessionID = try container.decode(String.self, forKey: .sessionID)
-        token = try container.decode([Token].self, forKey: .token)
+        token = try container.decode(String.self, forKey: .token)
     }
     
     func encode(to encoder: Encoder) throws {
