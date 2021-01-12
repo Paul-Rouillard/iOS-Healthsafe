@@ -114,7 +114,7 @@ struct LoginFormView: View {
         request.httpMethod = "POST"
         request.httpBody = encoded
 
-        print(String(data: encoded, encoding: .utf8)!)
+        print("---------------\nSending connexion info ... \n\(String(data: encoded, encoding: .utf8)!)\n---------------")
 
         URLSession.shared.dataTask(with: url) { data, res, error in
             guard let httpResponse = res as? HTTPURLResponse,
@@ -127,10 +127,15 @@ struct LoginFormView: View {
                 let decoder = JSONDecoder()
                 if let json = try? decoder.decode(Connexion.self, from: data) {
                     print(json)
+                    self.connexion.id = json.id
+                    self.connexion.token = json.token
+                    self.connexion.sessionID = json.sessionID
                 }
                 else {
                     let dataString = String(decoding: data, as: UTF8.self)
                     print("Invalid response \(dataString)")
+//                    let _ = String(decoding: data, as: UTF8.self)
+//                    print("Invalid response, please check error\n")
                 }
             }
         }.resume()

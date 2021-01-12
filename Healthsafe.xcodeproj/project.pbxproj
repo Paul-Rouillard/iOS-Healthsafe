@@ -18,6 +18,7 @@
 		40634148258CB2E4003C63D3 /* NFCMobileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40634147258CB2E4003C63D3 /* NFCMobileView.swift */; };
 		4084ABC724BA3A7F007D12C7 /* SignUpMed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */; };
 		409E600F24ED59B000B64B7E /* NFCscanMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409E600E24ED59B000B64B7E /* NFCscanMobile.swift */; };
+		40B7EB3E25A9EE5300A73878 /* NFCMedicalHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B7EB3D25A9EE5300A73878 /* NFCMedicalHistory.swift */; };
 		40C442C624B231BE002989C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C524B231BE002989C5 /* AppDelegate.swift */; };
 		40C442C824B231BE002989C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C724B231BE002989C5 /* SceneDelegate.swift */; };
 		40C442CA24B231BE002989C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C442C924B231BE002989C5 /* ContentView.swift */; };
@@ -64,6 +65,7 @@
 		4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMed.swift; sourceTree = "<group>"; };
 		409E600E24ED59B000B64B7E /* NFCscanMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCscanMobile.swift; sourceTree = "<group>"; };
 		409E601024EF235200B64B7E /* Healthsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Healthsafe.entitlements; sourceTree = "<group>"; };
+		40B7EB3D25A9EE5300A73878 /* NFCMedicalHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCMedicalHistory.swift; sourceTree = "<group>"; };
 		40C442C224B231BE002989C5 /* Healthsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Healthsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C442C524B231BE002989C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40C442C724B231BE002989C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				40C442F924B35F52002989C5 /* Home.swift */,
 				4038E85125A214760067E655 /* NFCDesktopView.swift */,
 				40634147258CB2E4003C63D3 /* NFCMobileView.swift */,
+				40B7EB3D25A9EE5300A73878 /* NFCMedicalHistory.swift */,
 				4029189524CB0ED700D0299F /* PreSignUp.swift */,
 				4029189724CB137000D0299F /* SignUpClient.swift */,
 				4084ABC624BA3A7F007D12C7 /* SignUpMed.swift */,
@@ -393,6 +396,7 @@
 				4038E84025A090C70067E655 /* NFCwriteMobile.swift in Sources */,
 				4029189824CB137000D0299F /* SignUpClient.swift in Sources */,
 				40634148258CB2E4003C63D3 /* NFCMobileView.swift in Sources */,
+				40B7EB3E25A9EE5300A73878 /* NFCMedicalHistory.swift in Sources */,
 				40C442FA24B35F52002989C5 /* Home.swift in Sources */,
 				4048C3DB254F7AF60052F0F3 /* ViewExtensions.swift in Sources */,
 				40ED06F0256AD60500E6A202 /* NFCscanDesktop.swift in Sources */,

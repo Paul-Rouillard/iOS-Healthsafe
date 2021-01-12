@@ -12,13 +12,13 @@ struct NFCDesktopControler: View {
     @State var receivedData: Bool = false
     @State var goBack: Bool = false
     @Binding var data: String
-    @Binding var nfcData: NFCData
+    @ObservedObject var nfcData: NFCData
 
     var body: some View {
         if goBack {
             return AnyView(Home(connexion: Connexion()))
         } else {
-            return AnyView(NFCDesktopView(receivedData: $receivedData, goBack: $goBack, data: $data, nfcData: $nfcData))
+            return AnyView(NFCDesktopView(receivedData: $receivedData, goBack: $goBack, data: $data, nfcData: nfcData))
         }
     }
 }
@@ -32,8 +32,8 @@ struct NFCDesktopView: View {
     @Binding var receivedData: Bool
     @Binding var goBack: Bool
     @Binding var data: String
-    @Binding var nfcData: NFCData
-    
+    @ObservedObject var nfcData: NFCData
+
     var body: some View {
         Button(action: {
             self.goBack = true
@@ -138,7 +138,7 @@ struct NFCDesktopView: View {
                         TextField("", text: _deciphered.binding("socialNumber"))
                     }
                     HStack {
-                        Text("Organ doner")
+                        Text("Organ donor")
                         TextField("", text: _deciphered.binding("organDonation"))
                     }
                 }
@@ -153,7 +153,7 @@ struct NFCDesktopView: View {
                     }
                 }
             }
-            NFCWriteButton(data: $data, dataToWrite: $nfcData)
+            NFCWriteButton(data: $data, dataToWrite: nfcData)
                 .modifier(ButtonFormStyle())
         }
     }

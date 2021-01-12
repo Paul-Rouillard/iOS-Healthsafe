@@ -10,23 +10,24 @@ import SwiftUI
 struct NFCMobileContoler: View {
     @State var backPressed: Bool = false
     @Binding var data: String
-    @Binding var nfcData: NFCData
+    @ObservedObject var nfcData: NFCData
 
     var body: some View {
         if backPressed {
             return AnyView(Home(connexion: Connexion()))
         } else {
-            return AnyView(NFCMobileView(data: $data, nfcData: $nfcData, backPressed: $backPressed))
+            return AnyView(NFCMobileView(data: $data, backPressed: $backPressed, nfcData: nfcData))
         }
     }
 }
 
 struct NFCMobileView: View {
-    @State var allowModifications: Bool = true
+    @State private var allowModifications: Bool = true
+    @State private var showMedHistory : Bool = false
     @Binding var data: String
-    @Binding var nfcData: NFCData
     @Binding var backPressed: Bool
-//    @State var deciphered: [String:String] = [:] //<- Make this a Dictionary type
+    @ObservedObject var nfcData: NFCData
+    //    @State var deciphered: [String:String] = [:] //<- Make this a Dictionary type
 
     var body: some View {
         Button(action: {
@@ -55,23 +56,34 @@ struct NFCMobileView: View {
                 HStack {
                     Text("Age")
                     TextField("", text: $nfcData.age)
+                        .keyboardType(.numberPad)
+                }
+                DatePicker(selection: $nfcData.bDay, in: ...Date(), displayedComponents: .date) {
+                    Text("Birthday")
+                        .modifier(FormTextFieldStyle())
                 }
             }
             Section {
                 HStack {
                     Text("Height")
                     TextField("", text: $nfcData.height)
+                        .keyboardType(.numberPad)
                 }
                 HStack {
                     Text("Weight")
                     TextField("", text: $nfcData.weight)
+                        .keyboardType(.numberPad)
                 }
             }
             Section {
-                HStack {
-                    Text("Medical history")
-                    TextField("", text: $nfcData.medicalHistory)
-                }
+                    Button(action: {
+                        self.showMedHistory = true
+                    }) {
+                        Text("Medical history")//, destination: NFCMedicalHistory())
+                    }.sheet(isPresented: $showMedHistory, content: {
+                        NFCMedicalHistory(data: nfcData)
+                    })
+
                 HStack {
                     Text("Treatement")
                     TextField("", text: $nfcData.treatments)
@@ -89,6 +101,7 @@ struct NFCMobileView: View {
                 HStack {
                     Text("Emergency number")
                     TextField("", text: $nfcData.emergencyNumber)
+                        .keyboardType(.numberPad)
                 }
                 HStack {
                     Text("Doctor")
@@ -97,22 +110,15 @@ struct NFCMobileView: View {
                 HStack {
                     Text("Social number")
                     TextField("", text: $nfcData.socialNumber)
+                        .keyboardType(.numberPad)
                 }
                 HStack {
-                    Text("Organ doner")
+                    Text("Organ donor")
                     TextField("", text: $nfcData.organDonation)
+                        .autocapitalization(.none)
                 }
             }
         }.disabled(allowModifications)
-//            .onAppear {
-//                //↓ No `var` here
-//                deciphered = data.split(separator: "\n").reduce(into: [String: String]()) {
-//                    let str = $1.split(separator: ":")
-//                    if let first = str.first, let value = str.last {
-//                        $0[String(first)] = String(value)
-//                    }
-//                }
-//            }
         HStack {
             Button(action: {
                 self.allowModifications = false
@@ -128,12 +134,8 @@ struct NFCMobileView: View {
 //            }) {
 //                Text("UPDATE - test")
 //            }
-            NFCWriteButton(data: $data, dataToWrite: $nfcData)
+            NFCWriteButton(data: $data, dataToWrite: nfcData)
                 .modifier(ButtonFormStyle())
-//                .onTapGesture {
-//                    self.data = "allergies:\(self.nfcData.allergies)\nlastName:\(self.nfcData.lastName)\ngender:\(self.nfcData.gender)\nweight:\(self.nfcData.weight)\nsocialNumber:\(self.nfcData.socialNumber)\nemergencyNumber:\(self.nfcData.emergencyNumber)\nbloodType:\(self.nfcData.bloodType)\ntreatments:\(self.nfcData.treatments)\ndoctor:\(self.nfcData.doctor)\nfirstName:\(self.nfcData.firstName)\norganDonation:\(self.nfcData.organDonation)\nId:\(self.nfcData.Id)\nmedicalHistory:\(self.nfcData.medicalHistory)\nage:\(self.nfcData.age)\nheight:\(self.nfcData.height)\n"
-//                    print(".onTapGesture\n\(self.data)\n")
-//                }
         }
     }
 }

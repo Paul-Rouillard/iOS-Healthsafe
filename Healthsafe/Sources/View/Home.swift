@@ -13,19 +13,20 @@ struct Home: View {
     @State var signOff: Bool = false
     @State var showNFCMobile: Bool = false
     @State var showNFCDesktop: Bool = false
-    @State var nfcData: NFCData = NFCData()
+    @State var firstUse: Bool = false
+    @ObservedObject var nfcData: NFCData = NFCData()
     @ObservedObject var connexion: Connexion
     @StateObject var deconnexion = Deconnexion()
    
     var body: some View {
         if signOff {
             return AnyView(ContentView())
-        } else if showNFCMobile {
-            return AnyView(NFCMobileContoler(data: $data, nfcData: $nfcData))
+        } else if showNFCMobile || firstUse {
+            return AnyView(NFCMobileContoler(data: $data, nfcData: nfcData))
         } else if showNFCDesktop {
-            return AnyView(NFCDesktopControler(data: $data, nfcData: $nfcData))
+            return AnyView(NFCDesktopControler(data: $data, nfcData: nfcData))
         } else {
-            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile, showNFCDesktop: $showNFCDesktop, nfcData: $nfcData ,connexion: connexion, deconnexion: deconnexion))
+            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile, showNFCDesktop: $showNFCDesktop, firstUse: $firstUse, nfcData: nfcData, connexion: connexion, deconnexion: deconnexion))
         }
     }
 }
@@ -35,7 +36,8 @@ struct HomeView: View {
     @Binding var signOff: Bool
     @Binding var showNFCMobile: Bool
     @Binding var showNFCDesktop: Bool
-    @Binding var nfcData: NFCData
+    @Binding var firstUse: Bool
+    @ObservedObject var nfcData: NFCData
     @ObservedObject var connexion: Connexion
     @ObservedObject var deconnexion: Deconnexion
 
@@ -64,10 +66,16 @@ struct HomeView: View {
             Spacer()
 //            Text(data)
             HStack {
-                NFCButtonMobile(data: $data, showData: $showNFCMobile, storeNFC: $nfcData)
+                NFCButtonMobile(data: $data, showData: $showNFCMobile, storeNFC: nfcData)
 //                    .frame(width: 150.0, height: 150.0)
                 NFCButtonDesktop(data: $data, view: $showNFCDesktop)
 //                    .frame(width: 150.0, height: 150.0)
+            }
+            Button(action: {
+                self.firstUse = true
+            }) {
+                Text("Init Tag")
+                    .modifier(ButtonFormStyleSecondary())
             }
             Spacer()
         }

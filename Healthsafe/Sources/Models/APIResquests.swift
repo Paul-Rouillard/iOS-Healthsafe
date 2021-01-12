@@ -205,10 +205,14 @@ class NewPatient: ObservableObject, Codable {
 
 class Connexion: Codable, ObservableObject {
     enum CodingKeys: String, CodingKey {
-        case email, password, _id = "id", token, sessionID
+        case email, password, id, token, sessionID
     }
-    @Published var token: [Token] = [.init()]
-    @Published var sessionID: [SessionID] = [.init()]
+//    @Published var token: [Token] = [.init()]
+//    @Published var sessionID: [SessionID] = [.init()]
+
+    @Published var token: String = ""
+    @Published var sessionID: String = ""
+    @Published var id: String = ""
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -217,8 +221,11 @@ class Connexion: Codable, ObservableObject {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        sessionID = try container.decode([SessionID].self, forKey: .sessionID)
-        token = try container.decode([Token].self, forKey: .token)
+//        sessionID = try container.decode([SessionID].self, forKey: .sessionID)
+//        token = try container.decode([Token].self, forKey: .token)
+        sessionID = try container.decode(String.self, forKey: .sessionID)
+        token = try container.decode(String.self, forKey: .token)
+        id = try container.decode(String.self, forKey: .id)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -277,7 +284,6 @@ class SessionID: ObservableObject, Codable {
 
     }
 }
-
 
 class Deconnexion: ObservableObject, Encodable {
     var token = [Token]()
