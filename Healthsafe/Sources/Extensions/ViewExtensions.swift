@@ -23,8 +23,25 @@ struct VisibilityStyle: ViewModifier {
    }
 }
 
-extension View {
-   func visibility(hidden: Binding<Bool>) -> some View {
-      modifier(VisibilityStyle(hidden: hidden))
+struct VisibilityStyleHowIsLogged: ViewModifier {
+   
+   @Binding var show: Bool
+   func body(content: Content) -> some View {
+      Group {
+         if !show {
+            content
+         } else {
+            content.hidden()
+         }
+      }
    }
+}
+extension View {
+    func visibility(hidden: Binding<Bool>) -> some View {
+        modifier(VisibilityStyle(hidden: hidden))
+    }
+
+    func isPatientLogIn(show: Binding<Bool>) -> some View {
+        modifier(VisibilityStyleHowIsLogged(show: show))
+    }
 }

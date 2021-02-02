@@ -15,84 +15,109 @@ struct LoginFormView: View {
     @State private var confirmation: String = ""
     @State private var showConfirmation: Bool = false
     @State private var showSignUp: Bool = false
+    @State private var showGroup: Bool = true
 
+    @Binding var isPatientConnected: Bool
     @Binding var signInSuccess: Bool
     @Binding var signUpClicked: Bool
     @ObservedObject var connexion: Connexion
 
     var body: some View {
-        VStack {
-            Image("Logo_healthsafe")
-            Spacer()
-                .frame(height: 75.0)
-            VStack (alignment: .leading){
-                Text("Welcome to Healthsafe")
-                    .font(.title)
-                    .modifier(LabelStyle())
-            }
-            .padding()
-            Spacer()
-                .frame(height: 70.0)
+        if showGroup {
             VStack {
-                TextField("E-MAIL", text: $connexion.email)
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-                    .frame(width: 300.0)
-                    .modifier(LabelStyle())
-                Divider()
-                    .padding(.horizontal, 30)
-
+                Image("Logo_healthsafe")
                 Spacer()
-                    .frame(height: 30.0)
-                SecureField("PASSWORD", text: $connexion.password)
-                    .frame(width: 300.0)
-                    .modifier(LabelStyle())
-                Divider()
-                    .padding(.horizontal, 30)
+                    .frame(height: 75.0)
+                VStack (alignment: .leading){
+                    Text("Welcome to Healthsafe")
+                        .font(.title)
+                        .modifier(LabelStyle())
+                }
+                .padding()
+                Spacer()
+                    .frame(height: 70.0)
+                VStack {
+                    TextField("E-MAIL", text: $connexion.email)
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .frame(width: 300.0)
+                        .modifier(LabelStyle())
+                    Divider()
+                        .padding(.horizontal, 30)
+
+                    Spacer()
+                        .frame(height: 30.0)
+                    SecureField("PASSWORD", text: $connexion.password)
+                        .frame(width: 300.0)
+                        .modifier(LabelStyle())
+                    Divider()
+                        .padding(.horizontal, 30)
+                }
+                Spacer()
+                    .frame(height: 50.0)
+                if showError {
+                    Text("Incorrect username/password.").foregroundColor(Color.red)
+                }
+                if showEmpty {
+                    Text("Error: One or all fields are empty.")
+                }
+                VStack {
+                    Button(action: {
+                        self.showGroup = false
+                    }) {
+                        Text("Connexion")
+                            .modifier(ButtonStyle())
+                    }
+                        .padding(.horizontal, 25.0)
+
+                    Spacer()
+                        .frame(height: 25)
+
+                    Button(action: {
+                        print("inscription pressed")
+    //                    self.showSignUp = true
+                        self.signUpClicked = true
+                    }) {
+                        Text("Inscription")
+                            .font(.custom("Raleway", size: 20))
+    //                        .underline()
+                            .modifier(ButtonStyleSecondary())
+                    }
+    //                .sheet(isPresented: $showSignUp, content: {
+    //                    PreSignUp()
+    //                })
+                }
             }
-            Spacer()
-                .frame(height: 50.0)
-            if showError {
-                Text("Incorrect username/password.").foregroundColor(Color.red)
-            }
-            if showEmpty {
-                Text("Error: One or all fields are empty.")
-            }
+        } else {
             VStack {
                 Button(action: {
-                    if (connexion.checkEmpty) {
-                        do {
-                            try self.connect()
-                        }
-                        catch {
+                    self.showGroup = false
+                    self.isPatientConnected = false
+                    if connexion.checkEmpty {
+                        self.connect(url: "drSignin", onError: { err in
                             self.showError = true
-                        }
+                        })
                     } else {
                         self.showEmpty = true
                     }
-                    
                 }) {
-                    Text("Connexion")
+                    Text("Vous êtes médecin")
                         .modifier(ButtonStyle())
                 }
-                    .padding(.horizontal, 25.0)
-
-                Spacer()
-                    .frame(height: 25)
-
                 Button(action: {
-                    print("inscription pressed")
-//                    self.showSignUp = true
-                    self.signUpClicked = true
+                    self.showGroup = false
+                    self.isPatientConnected = true
+                    if (connexion.checkEmpty) {
+                        self.connect(url: "patientSignin", onError: { err in
+                            self.showError = true
+                        })
+                    } else {
+                        self.showEmpty = true
+                    }
                 }) {
-                    Text("Inscription")
-                        .font(.custom("Raleway", size: 20))
-//                        .underline()
-                        .modifier(ButtonStyleSecondary())
+                    Text("Vous êtes patient")
+                        .modifier(ButtonStyle())
                 }
-//                .sheet(isPresented: $showSignUp, content: {
-//                    PreSignUp()
-//                })
             }
         }
     }
@@ -102,12 +127,16 @@ struct LoginFormView: View {
         self.showError = true
     }
 
-    func connect() throws {
-        guard let encoded = try? JSONEncoder().encode(connexion) else {
-            print("Fail to encode newMed")
+//    func connect() throws {
+    func connect(url: String, onError errorHandler: @escaping (Error?)->Void) { //<-
+        let encoded: Data
+        do {
+            encoded = try JSONEncoder().encode(connexion)
+        } catch {
+            print("Fail to encode newMed: \(error)")
             return
         }
-        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/drSignin")!
+        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/\(url)")!
 //        let url = URL(string: "https://x2021healthsafe1051895009000.northeurope.cloudapp.azure.com:5000/api/patientSignin")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -115,45 +144,58 @@ struct LoginFormView: View {
         request.httpBody = encoded
 
         print("---------------\nSending connexion info ... \n\(String(data: encoded, encoding: .utf8)!)\n---------------")
-
+        print("Resquesting on /api/\(url)")
         URLSession.shared.dataTask(with: url) { data, res, error in
-            guard let httpResponse = res as? HTTPURLResponse,
-                    (200...299).contains(httpResponse.statusCode) else {
-                    self.handleServerError(res!)
+            if let error = error {
+                print("error")
+                errorHandler(error)
+                return
+            }
+            guard let response = res else {
+                print("error in response")
+//                errorHandler(ConnexionError.invalidServerRes) //<-
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  case 200...299 = httpResponse.statusCode
+            else {
+                print("error in request")
+                self.handleServerError(res!)
                 return
             }
             self.signInSuccess = true
-            if let data = data {
-                let decoder = JSONDecoder()
-                if let json = try? decoder.decode(Connexion.self, from: data) {
-                    print(json)
-                    self.connexion.id = json.id
-                    self.connexion.token = json.token
-                    self.connexion.sessionID = json.sessionID
-                }
-                else {
-                    let dataString = String(decoding: data, as: UTF8.self)
-                    print("Invalid response \(dataString)")
-//                    let _ = String(decoding: data, as: UTF8.self)
-//                    print("Invalid response, please check error\n")
-                }
+            guard let data = data else {
+                print("data is nil")
+                return
             }
-        }.resume()
-    }
+            let decoder = JSONDecoder()
+            // connect anyway, fix JSON !
+            do {
+                let json = try decoder.decode(Connexion.self, from: data)
+                print(json)
+                self.connexion.id = json.id
+                self.connexion.token = json.token
+                self.connexion.sessionID = json.sessionID
+            } catch {
+                let dataString = String(data: data, encoding: .utf8) ?? "Unknown encoding"
+                print("Invalid response \(error) - \(dataString)")
+            }
+        }.resume()    }
 }
 
 struct ContentView: View {
     @State private var signInSuccess: Bool = false
     @State private var signUpClicked: Bool = false
+    @State private var isPatientConnected: Bool = false
     @StateObject var connexion = Connexion()
 
     var body: some View {
         if signInSuccess {
-            return AnyView(Home(connexion: connexion))
+            return AnyView(Home(isPatientConnected: $isPatientConnected, connexion: connexion))
         } else if (signUpClicked) {
             return AnyView(PreSignUp())
         } else {
-            return AnyView(LoginFormView(signInSuccess: $signInSuccess, signUpClicked: $signUpClicked, connexion: connexion))
+            return AnyView(LoginFormView(isPatientConnected: $isPatientConnected, signInSuccess: $signInSuccess, signUpClicked: $signUpClicked, connexion: connexion))
         }
     }
 }

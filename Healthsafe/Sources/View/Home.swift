@@ -14,6 +14,7 @@ struct Home: View {
     @State var showNFCMobile: Bool = false
     @State var showNFCDesktop: Bool = false
     @State var firstUse: Bool = false
+    @Binding var isPatientConnected: Bool
     @ObservedObject var nfcData: NFCData = NFCData()
     @ObservedObject var connexion: Connexion
     @StateObject var deconnexion = Deconnexion()
@@ -22,11 +23,11 @@ struct Home: View {
         if signOff {
             return AnyView(ContentView())
         } else if showNFCMobile || firstUse {
-            return AnyView(NFCMobileContoler(data: $data, nfcData: nfcData))
+            return AnyView(NFCMobileContoler(data: $data, isPatientConnected: $isPatientConnected, nfcData: nfcData))
         } else if showNFCDesktop {
             return AnyView(NFCDesktopControler(data: $data, nfcData: nfcData))
         } else {
-            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile, showNFCDesktop: $showNFCDesktop, firstUse: $firstUse, nfcData: nfcData, connexion: connexion, deconnexion: deconnexion))
+            return AnyView(HomeView(data: $data, signOff: $signOff, showNFCMobile: $showNFCMobile, showNFCDesktop: $showNFCDesktop, firstUse: $firstUse, isPatientConnected: $isPatientConnected, nfcData: nfcData, connexion: connexion, deconnexion: deconnexion))
         }
     }
 }
@@ -37,6 +38,7 @@ struct HomeView: View {
     @Binding var showNFCMobile: Bool
     @Binding var showNFCDesktop: Bool
     @Binding var firstUse: Bool
+    @Binding var isPatientConnected: Bool
     @ObservedObject var nfcData: NFCData
     @ObservedObject var connexion: Connexion
     @ObservedObject var deconnexion: Deconnexion
@@ -69,6 +71,7 @@ struct HomeView: View {
                 NFCButtonMobile(data: $data, showData: $showNFCMobile, storeNFC: nfcData)
 //                    .frame(width: 150.0, height: 150.0)
                 NFCButtonDesktop(data: $data, view: $showNFCDesktop)
+                    .isPatientLogIn(show: $isPatientConnected)
 //                    .frame(width: 150.0, height: 150.0)
             }
             Button(action: {
@@ -76,6 +79,7 @@ struct HomeView: View {
             }) {
                 Text("Init Tag")
                     .modifier(ButtonFormStyleSecondary())
+                    .isPatientLogIn(show: $isPatientConnected)
             }
             Spacer()
         }
@@ -118,10 +122,10 @@ struct HomeView: View {
     }
 }
 
-#if DEBUG
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home(connexion: Connexion())
-    }
-}
-#endif
+//#if DEBUG
+//struct Home_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Home(connexion: Connexion())
+//    }
+//}
+//#endif

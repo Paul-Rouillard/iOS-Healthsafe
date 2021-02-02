@@ -10,13 +10,14 @@ import SwiftUI
 struct NFCMobileContoler: View {
     @State var backPressed: Bool = false
     @Binding var data: String
+    @Binding var isPatientConnected: Bool
     @ObservedObject var nfcData: NFCData
 
     var body: some View {
         if backPressed {
-            return AnyView(Home(connexion: Connexion()))
+            return AnyView(Home(isPatientConnected: $isPatientConnected, connexion: Connexion()))
         } else {
-            return AnyView(NFCMobileView(data: $data, backPressed: $backPressed, nfcData: nfcData))
+            return AnyView(NFCMobileView(data: $data, backPressed: $backPressed, isPatientConnected: $isPatientConnected, nfcData: nfcData))
         }
     }
 }
@@ -26,6 +27,7 @@ struct NFCMobileView: View {
     @State private var showMedHistory : Bool = false
     @Binding var data: String
     @Binding var backPressed: Bool
+    @Binding var isPatientConnected: Bool
     @ObservedObject var nfcData: NFCData
     //    @State var deciphered: [String:String] = [:] //<- Make this a Dictionary type
 
@@ -136,6 +138,7 @@ struct NFCMobileView: View {
 //            }
             NFCWriteButton(data: $data, dataToWrite: nfcData)
                 .modifier(ButtonFormStyle())
+                .isPatientLogIn(show: $isPatientConnected)
         }
     }
 }

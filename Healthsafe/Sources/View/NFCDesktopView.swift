@@ -11,12 +11,13 @@ import SwiftUI
 struct NFCDesktopControler: View {
     @State var receivedData: Bool = false
     @State var goBack: Bool = false
+    @State var isPatientConnected: Bool = false
     @Binding var data: String
     @ObservedObject var nfcData: NFCData
 
     var body: some View {
         if goBack {
-            return AnyView(Home(connexion: Connexion()))
+            return AnyView(Home(isPatientConnected: $isPatientConnected, connexion: Connexion()))
         } else {
             return AnyView(NFCDesktopView(receivedData: $receivedData, goBack: $goBack, data: $data, nfcData: nfcData))
         }
